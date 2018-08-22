@@ -1,21 +1,18 @@
 .side-bar {
   height: 100%;
   background: #212F3D;
+  text-align: center;
   justify-content: flex-start;
+  color: white;
 }
 
 .side-bar-icon-container {
-  text-align: center;
   padding: 15px 10px;
   cursor: pointer;
 }
 
-.side-bar-icon-container:hover {
+.side-bar-icon-container:hover, .side-bar-icon-container.active {
   background: #313F4D;
-}
-
-.side-bar-icon-container.active {
-  background: #414F5D;
 }
 
 .side-bar-icon-container:focus {
@@ -23,11 +20,10 @@
 }
 
 .side-bar-icon {
-  font-size: 32px;
-  color: white;
+  font-size: 28px;
 }
 
 .side-bar-label {
   display: block;
-  color: white;
+  line-height: 20px;
 }
