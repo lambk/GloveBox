@@ -1,0 +1,29 @@
+.side-bar {
+  height: 100%;
+  background: #212F3D;
+  justify-content: flex-start;
+}
+
+.side-bar-icon-container {
+  text-align: center;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.side-bar-icon-container:hover {
+  background: #313F4D;
+}
+
+.side-bar-icon-container:focus {
+  outline: none;
+}
+
+.side-bar-icon {
+  font-size: 32px;
+  color: white;
+}
+
+.side-bar-label {
+  display: block;
+  color: white;
+}

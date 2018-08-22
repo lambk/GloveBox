@@ -1,8 +1,9 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    {{ title }}
-  </h1>
+<div style="display: flex; height: 100vh">
+  <app-side-bar style="width: 15%; min-width: 80px; max-width: 110px"></app-side-bar>
+  <div style="width: 100%">
+    <div style="height: 30px; -webkit-app-region: drag">
+      <!-- Spacer div with drag to add space where the hidden titlebar belongs -->
+    </div>
+    <router-outlet></router-outlet>
+  </div>
 </div>
-
-<router-outlet></router-outlet>
