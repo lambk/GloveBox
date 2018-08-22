@@ -5,6 +5,9 @@
 /tmp
 /out-tsc
 
+# electron builds
+/*-darwin-*
+
 # dependencies
 /node_modules
 
