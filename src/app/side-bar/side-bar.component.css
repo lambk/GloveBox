@@ -6,12 +6,16 @@
 
 .side-bar-icon-container {
   text-align: center;
-  padding: 10px;
+  padding: 15px 10px;
   cursor: pointer;
 }
 
 .side-bar-icon-container:hover {
   background: #313F4D;
+}
+
+.side-bar-icon-container.active {
+  background: #414F5D;
 }
 
 .side-bar-icon-container:focus {

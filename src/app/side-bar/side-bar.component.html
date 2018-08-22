@@ -2,11 +2,11 @@
   <!-- Spacer div with drag to add space where the hidden titlebar belongs -->
 </div>
 <div class="vertical-flex side-bar">
-  <div routerLink="/overview" class="side-bar-icon-container">
+  <div routerLink="/overview" class="side-bar-icon-container" [class.active]="href === '/overview'">
     <i class="side-bar-icon fa fa-automobile"></i>
     <span class="side-bar-label">Overview</span>
   </div>
-  <div routerLink="/log" class="side-bar-icon-container">
+  <div routerLink="/log" class="side-bar-icon-container" [class.active]="href === '/log'">
     <i class="side-bar-icon fa fa-book"></i>
     <span class="side-bar-label">Service Log</span>
   </div>
