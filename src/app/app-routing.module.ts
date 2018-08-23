@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { OverviewComponent } from './overview/overview.component';
 import { ServiceLogComponent } from './service-log/service-log.component';
+import { SettingsComponent } from './settings/settings.component';
 
 const routes: Routes = [
   {
@@ -11,6 +12,10 @@ const routes: Routes = [
   {
     path: 'log',
     component: ServiceLogComponent
+  },
+  {
+    path: 'settings',
+    component: SettingsComponent
   }
 ];
 

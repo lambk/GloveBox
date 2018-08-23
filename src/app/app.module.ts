@@ -6,13 +6,15 @@ import { AppComponent } from './app.component';
 import { SideBarComponent } from './side-bar/side-bar.component';
 import { OverviewComponent } from './overview/overview.component';
 import { ServiceLogComponent } from './service-log/service-log.component';
+import { SettingsComponent } from './settings/settings.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SideBarComponent,
     OverviewComponent,
-    ServiceLogComponent
+    ServiceLogComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,
