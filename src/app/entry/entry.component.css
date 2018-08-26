@@ -1,0 +1,36 @@
+.entry-window {
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.greyed {
+  color: #BBBBBB;
+  opacity: 0.8;
+}
+
+.dropdown-btn-open, .dropup-card {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.dropup-btn-open, .dropdown-card {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.collapse {
+  transition: all 0.5s linear;
+  display: block !important;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+}
+
+.collapse.show {
+  transition: all 0.5s linear;
+  opacity: 1;
+  max-height: 500px;
+}
