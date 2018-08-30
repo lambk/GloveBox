@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { RegisterFormComponent } from '../register-form/register-form.component';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-entry',
@@ -7,26 +9,23 @@ import { Component } from '@angular/core';
 })
 export class EntryComponent {
 
+  private registerSubmitSubject : Subject<void>
+
   private collapsed = {
     login: true,
     register: true
   };
 
-  constructor() { }
-
-  onLoginClick() {
-    if (this.collapsed.login) {
-      this.collapsed.register = true;
-      this.collapsed.login = false;
-      return;
-    }
+  constructor() {
+    this.registerSubmitSubject = new Subject<void>()
   }
 
   onRegisterClick() {
     if (this.collapsed.register) {
-      this.collapsed.login = true;
       this.collapsed.register = false;
-      return;
+    } else {
+      this.registerSubmitSubject.next();
     }
   }
+
 }

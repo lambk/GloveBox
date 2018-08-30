@@ -1,4 +1,4 @@
-<div class="entry-window col-md-5 col-sm-9">
+<div class="entry-window col-md-7 col-sm-9">
   <h1>GloveBox</h1>
   <hr>
   <div>
@@ -6,45 +6,14 @@
       [class.dropdown-btn-open]="!collapsed.login" [class.greyed]="!collapsed.register" (click)="onLoginClick()">
     <div class="collapse" id="loginCollapse" [ngbCollapse]="collapsed.login">
       <form class="card card-body dropdown-card">
-        <div class="form-group">
-          <h5>Email</h5>
-          <input type="text" class="form-control">
-        </div>
-        <div class="form-group">
-          <h5>Password</h5>
-          <input type="password" class="form-control">
-        </div>
       </form>
     </div>
   </div>
   <div class="mt-2">
     <div class="collapse" id="registerCollapse" [ngbCollapse]="collapsed.register">
-      <form class="card card-body dropup-card" style="text-align: left">
-        <div class="form-group row">
-          <label for="emailReg" class="col-sm-3 col-form-label">Email</label>
-          <div class="col-sm-9">
-            <input id="emailReg" type="text" class="form-control">
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="firstReg" class="col-sm-3 col-form-label">First Name</label>
-          <div class="col-sm-9">
-            <input id="firstReg" type="text" class="form-control">
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="lastReg" class="col-sm-3 col-form-label">Last Name</label>
-          <div class="col-sm-9">
-            <input id="lastReg" type="text" class="form-control">
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="pwReg" class="col-sm-3 col-form-label">Password</label>
-          <div class="col-sm-9">
-            <input id="pwReg" type="password" class="form-control">
-          </div>
-        </div>
-      </form>
+      <div class="card card-body dropup-card">
+        <app-register-form [submitSubject]="registerSubmitSubject"></app-register-form>
+      </div>
     </div>
     <input type="button" class="btn btn-lg btn-block btn-secondary" value="Register"
       [class.dropup-btn-open]="!collapsed.register" [class.greyed]="!collapsed.login" (click)="onRegisterClick()">

@@ -1,0 +1,30 @@
+<form (keydown.enter)="submit()">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text">Email</span>
+    </div>
+    <input type="text" class="form-control" name="email" [(ngModel)]="form.email.value"
+      [class.invalid]="!form.email.valid" (input)="form.email.valid = true">
+  </div>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text">Firstname</span>
+    </div>
+    <input type="text" class="form-control" name="firstname" [(ngModel)]="form.firstname.value"
+      [class.invalid]="!form.firstname.valid" (input)="form.firstname.valid = true">
+  </div>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text">Lastname</span>
+    </div>
+    <input type="text" class="form-control" name="lastname" [(ngModel)]="form.lastname.value"
+      [class.invalid]="!form.lastname.valid" (input)="form.lastname.valid = true">
+  </div>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text">Password</span>
+    </div>
+    <input type="password" class="form-control" name="password" [(ngModel)]="form.password.value"
+      [class.invalid]="!form.password.valid" (input)="form.password.valid = true">
+  </div>
+</form>
