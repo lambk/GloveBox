@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { OverviewComponent } from './overview/overview.component';
-import { ServiceLogComponent } from './service-log/service-log.component';
-import { SettingsComponent } from './settings/settings.component';
+import { OverviewComponent } from '../components/overview/overview.component';
+import { ServiceLogComponent } from '../components/service-log/service-log.component';
+import { SettingsComponent } from '../components/settings/settings.component';
 
 const routes: Routes = [
   {

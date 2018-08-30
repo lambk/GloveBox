@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Subject } from 'rxjs';
+import { RegisterService } from '../../services/register.service';
 
 @Component({
   selector: 'app-register-form',
@@ -9,6 +10,7 @@ import { Subject } from 'rxjs';
 export class RegisterFormComponent implements OnInit {
 
   @Input() submitSubject : Subject<void>;
+  @Output() onComplete = new EventEmitter;
 
   private form = {
     email: {
@@ -29,7 +31,7 @@ export class RegisterFormComponent implements OnInit {
     }
   }
 
-  constructor() { }
+  constructor(private registerService: RegisterService) { }
 
   ngOnInit() {
     this.submitSubject.subscribe(() => {
@@ -57,7 +59,18 @@ export class RegisterFormComponent implements OnInit {
 
   submit() {
     if (this.validateForm()) {
-      //todo Perform http call
+      let data = {
+        email: this.form.email.value,
+        firstname: this.form.firstname.value,
+        lastname: this.form.lastname.value,
+        password: this.form.password.value
+      };
+      let completion = this.onComplete;
+      this.registerService.registerUser(data).then((res) => {
+        completion.emit();
+      }, function(err) {
+        alert('Error registering user');
+      });
     }
   }
 }
