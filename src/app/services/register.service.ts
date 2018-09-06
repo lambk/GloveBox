@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { IUser } from '../interfaces/iuser';
+import { UserWrapper } from '../interfaces/userwrapper';
+import { environment } from '../../environments/environment';
 
-const options = new HttpHeaders({
-  'Content-Type': 'application/json'
+const headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'dataType': 'text'
 });
 
 @Injectable({
@@ -13,8 +15,8 @@ export class RegisterService {
 
   constructor(private http: HttpClient) { }
 
-  public async registerUser(user: IUser) {
-    let result = await this.http.get('https://jsonplaceholder.typicode.com/todos/1').toPromise();
-    console.log(result);
+  public async registerUser(user: UserWrapper) {
+    let result = await this.http.post(environment.server_url + '/users', user, {headers: headers, responseType: 'text'}).toPromise();
+    return result
   }
 }

@@ -60,15 +60,18 @@ export class RegisterFormComponent implements OnInit {
   submit() {
     if (this.validateForm()) {
       let data = {
-        email: this.form.email.value,
-        firstname: this.form.firstname.value,
-        lastname: this.form.lastname.value,
+        user: {
+          email: this.form.email.value,
+          firstName: this.form.firstname.value,
+          lastName: this.form.lastname.value,
+        },
         password: this.form.password.value
       };
       let completion = this.onComplete;
       this.registerService.registerUser(data).then((res) => {
         completion.emit();
-      }, function(err) {
+      }, (err) => {
+        console.log(err);
         alert('Error registering user');
       });
     }
