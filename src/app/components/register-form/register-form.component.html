@@ -1,30 +1,30 @@
-<form (keydown.enter)="submit()">
+<form (keydown.enter)="submit()" #form="ngForm" novalidate>
   <div class="input-group mb-3">
     <div class="input-group-prepend">
       <span class="input-group-text">Email</span>
     </div>
-    <input type="text" class="form-control" name="email" [(ngModel)]="form.email.value"
-      [class.invalid]="!form.email.valid" (input)="form.email.valid = true">
+    <input type="text" class="form-control" name="email" #email="ngModel" [(ngModel)]="data.email"
+      [class.invalid]="form.submitted && email.pristine && email.invalid" required email>
   </div>
   <div class="input-group mb-3">
     <div class="input-group-prepend">
       <span class="input-group-text">Firstname</span>
     </div>
-    <input type="text" class="form-control" name="firstname" [(ngModel)]="form.firstname.value"
-      [class.invalid]="!form.firstname.valid" (input)="form.firstname.valid = true">
+    <input type="text" class="form-control" name="firstname" #firstname="ngModel" [(ngModel)]="data.firstname"
+      [class.invalid]="form.submitted && firstname.pristine && firstname.invalid" required>
   </div>
   <div class="input-group mb-3">
     <div class="input-group-prepend">
       <span class="input-group-text">Lastname</span>
     </div>
-    <input type="text" class="form-control" name="lastname" [(ngModel)]="form.lastname.value"
-      [class.invalid]="!form.lastname.valid" (input)="form.lastname.valid = true">
+    <input type="text" class="form-control" name="lastname" #lastname="ngModel" [(ngModel)]="data.lastname"
+      [class.invalid]="form.submitted && lastname.pristine && lastname.invalid" required>
   </div>
   <div class="input-group mb-3">
     <div class="input-group-prepend">
       <span class="input-group-text">Password</span>
     </div>
-    <input type="password" class="form-control" name="password" [(ngModel)]="form.password.value"
-      [class.invalid]="!form.password.valid" (input)="form.password.valid = true">
+    <input type="password" class="form-control" name="password" #password="ngModel" [(ngModel)]="data.password"
+      [class.invalid]="form.submitted && password.pristine && password.invalid" required minlength="6">
   </div>
 </form>

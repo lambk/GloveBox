@@ -27,4 +27,8 @@ export class EntryComponent {
       this.registerSubmitSubject.next();
     }
   }
+
+  onLoginClick() {
+    
+  }
 }

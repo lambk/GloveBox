@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { RegisterService } from '../../services/register.service';
 
@@ -12,24 +13,8 @@ export class RegisterFormComponent implements OnInit {
   @Input() submitSubject : Subject<void>;
   @Output() onComplete = new EventEmitter;
 
-  private form = {
-    email: {
-      value: '',
-      valid: true
-    },
-    firstname: {
-      value: '',
-      valid: true
-    },
-    lastname: {
-      value: '',
-      valid: true
-    },
-    password: {
-      value: '',
-      valid: true
-    }
-  }
+  @ViewChild(NgForm) form;
+  data: any = {};
 
   constructor(private registerService: RegisterService) { }
 
@@ -39,41 +24,24 @@ export class RegisterFormComponent implements OnInit {
     });
   }
 
-  validateForm() {
-    if (!this.form.email.value.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
-      this.form.email.valid = false;
-    }
-    if (!this.form.firstname.value.match(/^[a-zA-Z\-]+$/)) {
-      this.form.firstname.valid = false;
-    }
-    if (!this.form.lastname.value.match(/^[a-zA-Z\-]+$/)) {
-      this.form.lastname.valid = false;
-    }
-    if (!this.form.password.value.match(/^.{6,100}$/)) {
-      this.form.password.valid = false;
-    }
-    return Object.entries(this.form).every(function(field) {
-      return field[1].valid;
-    });
-  }
-
   submit() {
-    if (this.validateForm()) {
-      let data = {
-        user: {
-          email: this.form.email.value,
-          firstName: this.form.firstname.value,
-          lastName: this.form.lastname.value,
-        },
-        password: this.form.password.value
-      };
-      let completion = this.onComplete;
-      this.registerService.registerUser(data).then((res) => {
-        completion.emit();
-      }, (err) => {
-        console.log(err);
-        alert('Error registering user');
-      });
-    }
+    this.form.submitted = true;
+    this.form.form.markAsPristine();
+    if (this.form.invalid) return;
+    let formdata = {
+      user: {
+        email: this.data.email,
+        firstName: this.data.firstname,
+        lastName: this.data.lastname,
+      },
+      password: this.data.password
+    };
+    let completion = this.onComplete;
+    this.registerService.registerUser(formdata).then((res) => {
+      completion.emit();
+    }, (err) => {
+      console.log(err);
+      alert('Error registering user');
+    });
   }
 }
