@@ -1,17 +1,23 @@
 <div class="entry-window col-md-7 col-sm-9">
   <h1>GloveBox</h1>
   <hr>
+  <div class="alert" *ngIf="alertdata.show" [@alertFade] [ngClass]="alertdata.type === 'SUCCESS' ? 'alert-success' : 'alert-danger'">
+    {{alertdata.msg}}
+    <button type="button" class="close" (click)="alertdata.show = false">
+      <span>&times;</span>
+    </button>
+  </div>
   <div>
     <input type="button" class="btn btn-lg btn-block btn-primary" value="Login"
       [class.dropdown-btn-open]="!collapsed.login" [class.greyed]="!collapsed.register" (click)="onLoginClick()">
     <div class="collapse" id="loginCollapse" [ngbCollapse]="collapsed.login">
-      
+
     </div>
   </div>
   <div class="mt-2">
     <div class="collapse" id="registerCollapse" [ngbCollapse]="collapsed.register">
       <div class="card card-body dropup-card">
-        <app-register-form [submitSubject]="registerSubmitSubject" (onComplete)="collapsed.register = true"></app-register-form>
+        <app-register-form [submitSubject]="registerSubmitSubject" (onSubmit)="onRegisterSubmit($event)"></app-register-form>
       </div>
     </div>
     <input type="button" class="btn btn-lg btn-block btn-secondary" value="Register"
