@@ -1,4 +1,10 @@
 <form (keydown.enter)="submit()" #form="ngForm" novalidate>
+  <div class="alert alert-danger fade show" *ngIf="error.show" [@errorFade]>
+    {{error.msg}}
+    <button type="button" class="close" (click)="error.show = false">
+      <span>&times;</span>
+    </button>
+  </div>
   <div class="input-group mb-3">
     <div class="input-group-prepend">
       <span class="input-group-text">Email</span>
