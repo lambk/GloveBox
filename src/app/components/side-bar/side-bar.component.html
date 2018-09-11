@@ -1,6 +1,6 @@
 <div class="vertical-flex side-bar">
   <div routerLink="/overview" class="side-bar-icon-container" [class.active]="href === '/overview'">
-    <i class="side-bar-icon fa fa-automobile"></i>
+    <i class="side-bar-icon fa fa-car"></i>
     <span class="side-bar-label">Overview</span>
   </div>
   <div routerLink="/log" class="side-bar-icon-container" [class.active]="href === '/log'">
@@ -10,5 +10,9 @@
   <div routerLink="/settings" class="side-bar-icon-container" [class.active]="href === '/settings'">
     <i class="side-bar-icon fa fa-cogs"></i>
     <span class="side-bar-label">Settings</span>
+  </div>
+  <div class="side-bar-icon-container mt-auto" (click)="logout()">
+    <i class="side-bar-icon fas fa-door-open"></i>
+    <span class="side-bar-label">Logout</span>
   </div>
 </div>

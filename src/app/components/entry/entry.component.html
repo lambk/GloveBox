@@ -8,19 +8,25 @@
     </button>
   </div>
   <div>
-    <input type="button" class="btn btn-lg btn-block btn-primary" value="Login"
-      [class.dropdown-btn-open]="!collapsed.login" [class.greyed]="!collapsed.register" (click)="onLoginClick()">
-    <div class="collapse" id="loginCollapse" [ngbCollapse]="collapsed.login">
-
+    <button type="button" class="btn btn-lg btn-block btn-primary" [class.dropdown-btn-open]="collapsed === 1"
+    [class.greyed]="collapsed === 2" [disabled]="submitting.login" (click)="onLoginClick()">
+      Login<img src="assets/spinner-sm-white.gif" height="30" class="ajaxLoader" *ngIf="submitting.login" />
+    </button>
+    <div class="collapse" id="loginCollapse" [ngbCollapse]="collapsed !== 1">
+      <div class="card card-body dropdown-card">
+        <app-login-form [submitSubject]="loginSubmitSubject" (onSubmit)="onSubformSubmit($event)" (onAjax)="showAjaxLoader($event, 'login')"></app-login-form>
+      </div>
     </div>
   </div>
   <div class="mt-2">
-    <div class="collapse" id="registerCollapse" [ngbCollapse]="collapsed.register">
+    <div class="collapse" id="registerCollapse" [ngbCollapse]="collapsed !== 2">
       <div class="card card-body dropup-card">
-        <app-register-form [submitSubject]="registerSubmitSubject" (onSubmit)="onRegisterSubmit($event)"></app-register-form>
+        <app-register-form [submitSubject]="registerSubmitSubject" (onSubmit)="onSubformSubmit($event)" (onAjax)="showAjaxLoader($event, 'register')"></app-register-form>
       </div>
     </div>
-    <input type="button" class="btn btn-lg btn-block btn-secondary" value="Register"
-      [class.dropup-btn-open]="!collapsed.register" [class.greyed]="!collapsed.login" (click)="onRegisterClick()">
+    <button type="button" class="btn btn-lg btn-block btn-secondary" [class.dropup-btn-open]="collapsed === 2"
+    [class.greyed]="collapsed === 1" [disabled]="submitting.register" (click)="onRegisterClick()">
+      Register<img src="assets/spinner-sm-white.gif" height="30" class="ajaxLoader" *ngIf="submitting.register" />
+    </button>
   </div>
 </div>

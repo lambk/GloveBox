@@ -1,0 +1,9 @@
+.input-group-text {
+  min-width: 98px;
+}
+
+.invalid {
+  background: #FF9595;
+  border-color: red;
+  border-left-width: 0;
+}

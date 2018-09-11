@@ -1,5 +1,11 @@
 <!-- Empty div that acts as a drag handle due to hidden titleBar -->
 <div class="drag-bar"></div>
+<div class="loading-overlay" *ngIf="loading">
+  <div class="centre-container col-sm-6 col-md-4">
+    <img src="assets/spinner-lg-black.gif" height="50" width="50">
+    <h1>Loading</h1>
+  </div>
+</div>
 <app-entry *ngIf="!loggedIn; else main"></app-entry>
 <ng-template #main>
   <div style="display: flex; height: 100vh">
