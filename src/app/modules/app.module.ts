@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { shim } from 'promise.prototype.finally';
 
 import { AppComponent } from '../components/app.component';
 import { SideBarComponent } from '../components/side-bar/side-bar.component';
@@ -15,6 +16,8 @@ import { SettingsComponent } from '../components/settings/settings.component';
 import { EntryComponent } from '../components/entry/entry.component';
 import { RegisterFormComponent } from '../components/register-form/register-form.component';
 import { LoginFormComponent } from '../components/login-form/login-form.component';
+
+shim();
 
 @NgModule({
   declarations: [

@@ -25,12 +25,12 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   public async login(data: LoginDTO) {
-    let promise = this.http.post(environment.server_url + '/auth/login', data, {headers: headers, responseType: 'text'}).toPromise();
-    promise.then((token) => {
-      this.loginData.email = data.email;
-      this.loginData.token = token;
-      localStorage.setItem('email', data.email);
-      localStorage.setItem('token', token);
+    let promise = this.http.post(environment.server_url + '/auth/login', data, {headers: headers, responseType: 'json'}).toPromise();
+    promise.then((res) => {
+      this.loginData.email = res['email'];
+      this.loginData.token = res['token'];
+      localStorage.setItem('email', res['email']);
+      localStorage.setItem('token', res['token']);
       this.loginObservable.next(true);
     }, () => {});
     return promise;
