@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { RegisterService } from '../../services/register.service';
-import { AlertType, AjaxEvent } from '../../constants';
+import { RegisterService } from 'src/app/services/register/register.service';
+import { AlertType, AjaxEvent } from 'src/app/constants';
 
 @Component({
   selector: 'app-register-form',
@@ -30,11 +30,9 @@ export class RegisterFormComponent implements OnInit {
     if (this.form.invalid) return;
     //Sets up the ajax data in the format expected by the server
     let formdata = {
-      user: {
-        email: this.data.email,
-        firstName: this.data.firstname,
-        lastName: this.data.lastname,
-      },
+      email: this.data.email,
+      firstName: this.data.firstname,
+      lastName: this.data.lastname,
       password: this.data.password
     };
     this.onAjax.emit({type: AjaxEvent.START});

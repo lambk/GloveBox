@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { AuthService } from '../../services/auth.service';
-import { AlertType, AjaxEvent } from '../../constants';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { AlertType, AjaxEvent } from 'src/app/constants';
 
 @Component({
   selector: 'app-login-form',

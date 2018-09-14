@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { LoginDTO } from '../interfaces/login.dto';
-import { environment } from '../../environments/environment';
+import { LoginDTO } from 'src/app/interfaces/login.dto';
+import { environment } from 'src/environments/environment';
 import { Subject } from 'rxjs';
+import { LoadingManager } from 'src/app/components/app.component'
 
 const headers = new HttpHeaders({
     'Content-Type': 'application/json',

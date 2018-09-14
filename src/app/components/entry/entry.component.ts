@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { RegisterFormComponent } from '../register-form/register-form.component';
+import { RegisterFormComponent } from 'src/app/components/register-form/register-form.component';
 import { Subject } from 'rxjs';
 import { trigger, state, style, animate, transition } from '@angular/animations';
-import { AlertType, AjaxEvent } from '../../constants';
+import { AlertType, AjaxEvent } from 'src/app/constants';
 
 @Component({
   selector: 'app-entry',
