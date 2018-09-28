@@ -46,7 +46,7 @@ export class AppComponent implements OnInit {
     let storedToken = localStorage.getItem('token');
     if (storedEmail !== null && storedToken !== null) {
       this.loadingManager.setLoadingState(true);
-      this.authService.resumeSession(storedEmail, storedToken)
+      this.authService.resumeSession(storedToken)
         .finally(() => this.loadingManager.setLoadingState(false));
     }
   }
