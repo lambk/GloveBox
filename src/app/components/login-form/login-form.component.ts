@@ -15,7 +15,7 @@ export class LoginFormComponent implements OnInit {
   @Output() onSubmit: EventEmitter<any> = new EventEmitter<any>();
   @Output() onAjax: EventEmitter<any> = new EventEmitter<any>();
 
-  @ViewChild(NgForm) form;
+  @ViewChild(NgForm) loginForm;
   private data: any = {};
 
   constructor(private AuthService: AuthService) { }
@@ -25,32 +25,48 @@ export class LoginFormComponent implements OnInit {
   }
 
   submit(): void {
-    this.form.submitted = true;
-    this.form.form.markAsPristine(); //Necessary to remove invalid styling once  the user starts modifying
-    if (this.form.invalid) return;
+    this.loginForm.submitted = true;
+    this.loginForm.form.markAsPristine(); //Necessary to remove invalid styling once  the user starts modifying
+    if (this.loginForm.invalid) return;
     //Sets up the ajax data in the format expected by the server
     let formdata = {
       email: this.data.email,
       password: this.data.password
     };
-    this.onAjax.emit({type: AjaxEvent.START});
+    this.startLoadingSpinner();
     this.AuthService.login(formdata).then((response) => {
       //Reset the form
-      this.form.submitted = false;
-      this.form.form.reset();
-      this.onSubmit.emit({
-        successful: true
-      });
+      this.loginForm.submitted = false;
+      this.loginForm.form.reset();
+      this.notifySuccess();
     }, (err) => {
-      let errorMsg = err.status === 0 ? err.statusText : err.error;
-      this.onSubmit.emit({
-        successful: false,
-        feedback: {
-          msg: errorMsg,
-          type: AlertType.ERROR
-        }
-      });
-    }).then(() => this.onAjax.emit({type: AjaxEvent.END}));
+      let error = err.status === 0 ? err.statusText : err.error;
+      this.notifyFailure(error);
+    }).finally(this.stopLoadingSpinner);
+  }
+
+  private notifySuccess(): void {
+    this.onSubmit.emit({
+      successful: true
+    });
+  }
+
+  private notifyFailure(error: string): void {
+    this.onSubmit.emit({
+      successful: false,
+      feedback: {
+        msg: error,
+        type: AlertType.ERROR
+      }
+    });
+  }
+
+  private startLoadingSpinner(): void {
+    this.onAjax.emit({type: AjaxEvent.START});
+  }
+
+  private stopLoadingSpinner(): void {
+    this.onAjax.emit({type: AjaxEvent.END})
   }
 
 }

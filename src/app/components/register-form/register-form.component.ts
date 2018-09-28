@@ -15,7 +15,7 @@ export class RegisterFormComponent implements OnInit {
   @Output() onSubmit: EventEmitter<any> = new EventEmitter<any>();
   @Output() onAjax: EventEmitter<any> = new EventEmitter<any>();
 
-  @ViewChild(NgForm) form;
+  @ViewChild(NgForm) registerForm;
   private data: any = {};
 
   constructor(private registerService: RegisterService) { }
@@ -25,9 +25,9 @@ export class RegisterFormComponent implements OnInit {
   }
 
   submit(): void {
-    this.form.submitted = true;
-    this.form.form.markAsPristine(); //Necessary to remove invalid styling once  the user starts modifying
-    if (this.form.invalid) return;
+    this.registerForm.submitted = true;
+    this.registerForm.form.markAsPristine(); //Necessary to remove invalid styling once  the user starts modifying
+    if (this.registerForm.invalid) return;
     //Sets up the ajax data in the format expected by the server
     let formdata = {
       email: this.data.email,
@@ -35,27 +35,43 @@ export class RegisterFormComponent implements OnInit {
       lastName: this.data.lastname,
       password: this.data.password
     };
-    this.onAjax.emit({type: AjaxEvent.START});
+    this.startLoadingSpinner();
     this.registerService.registerUser(formdata).then((response) => {
       //Reset the form
-      this.form.submitted = false;
-      this.form.form.reset();
-      this.onSubmit.emit({
-        successful: true,
-        feedback: {
-          msg: response,
-          type: AlertType.SUCCESS
-        }
-      });
+      this.registerForm.submitted = false;
+      this.registerForm.form.reset();
+      this.notifySuccess(response);
     }, (err) => {
-      let errorMsg = err.status === 0 ? err.statusText : err.error;
-      this.onSubmit.emit({
-        successful: false,
-        feedback: {
-          msg: errorMsg,
-          type: AlertType.ERROR
-        }
-      });
-    }).then(() => this.onAjax.emit({type: AjaxEvent.END}));
+      let error = err.status === 0 ? err.statusText : err.error;
+      this.notifyFailure(error);
+    }).then(this.stopLoadingSpinner);
+  }
+
+  private notifySuccess(msg: string): void {
+    this.onSubmit.emit({
+      successful: true,
+      feedback: {
+        msg: msg,
+        type: AlertType.SUCCESS
+      }
+    });
+  }
+
+  private notifyFailure(error: string): void {
+    this.onSubmit.emit({
+      successful: false,
+      feedback: {
+        msg: error,
+        type: AlertType.ERROR
+      }
+    });
+  }
+
+  private startLoadingSpinner(): void {
+    this.onAjax.emit({type: AjaxEvent.START});
+  }
+
+  private stopLoadingSpinner(): void {
+    this.onAjax.emit({type: AjaxEvent.END})
   }
 }

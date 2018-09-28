@@ -22,7 +22,7 @@ export class AuthService {
       this.token = res['token'];
       localStorage.setItem('token', res['token']);
       this.loginObservable.next(true);
-    }, () => {});
+    }, (err) => {});
     return task;
   }
 
@@ -36,7 +36,7 @@ export class AuthService {
     task.then((res) => {
       this.token = token;
       this.loginObservable.next(true);
-    }, (err) => console.log(err));
+    }, (err) => {});
     return task;
   }
 
@@ -52,7 +52,7 @@ export class AuthService {
       localStorage.removeItem('email');
       localStorage.removeItem('token');
       this.loginObservable.next(false);
-    }, (err) => console.log(err));
+    }, (err) => {});
     return task;
   }
 
