@@ -12,54 +12,48 @@ export class AuthService {
 
   private loginObservable: Subject<boolean> = new Subject<boolean>();
 
-  private loginData: any = {
-    email: undefined,
-    token: undefined
-  };
+  private token: string = undefined;
 
   constructor(private http: HttpClient) { }
 
   public async login(data: LoginDTO) {
-    let promise = this.http.post(environment.server_url + '/auth/login', data, {responseType: 'json'}).toPromise();
-    promise.then((res) => {
-      this.loginData.email = res['email'];
-      this.loginData.token = res['token'];
-      localStorage.setItem('email', res['email']);
+    let task = this.http.post(environment.server_url + '/auth/login', data, {responseType: 'json'}).toPromise();
+    task.then((res) => {
+      this.token = res['token'];
       localStorage.setItem('token', res['token']);
       this.loginObservable.next(true);
     }, () => {});
-    return promise;
+    return task;
   }
 
   public async resumeSession(token: string) {
-    let promise = this.http.post(environment.server_url + '/auth/validate', undefined,
+    let task = this.http.post(environment.server_url + '/auth/validate', undefined,
       { headers: new HttpHeaders({
         'token': token,
         'Content-Type':'application/json'
       }),
       responseType: 'text'}).toPromise();
-    promise.then((res) => {
-      this.loginData.token = token;
+    task.then((res) => {
+      this.token = token;
       this.loginObservable.next(true);
     }, (err) => console.log(err));
-    return promise;
+    return task;
   }
 
   public async logout() {
-    let promise = this.http.post(environment.server_url + '/auth/logout', undefined,
+    let task = this.http.post(environment.server_url + '/auth/logout', undefined,
       { headers: new HttpHeaders({
-        'token': this.loginData.token,
+        'token': this.token,
         'Content-Type':'application/json'
       }),
       responseType: 'text'}).toPromise();
-    promise.then(() => {
-      this.loginData.email = undefined;
-      this.loginData.token = undefined;
+    task.then(() => {
+      this.token = undefined;
       localStorage.removeItem('email');
       localStorage.removeItem('token');
       this.loginObservable.next(false);
     }, (err) => console.log(err));
-    return promise;
+    return task;
   }
 
   public getLoginObservable(): Subject<boolean> {

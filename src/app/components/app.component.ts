@@ -40,11 +40,10 @@ export class AppComponent implements OnInit {
       this.router.navigateByUrl('/');
     }
     this.authService.getLoginObservable().subscribe((loggedIn) => this.showEntry = !loggedIn);
-    this.loadingManager.getLoadingObservable().subscribe((showLoading) => this.showLoading = showLoading);
+    this.loadingManager.getLoadingObservable().subscribe((status) => this.showLoading = status);
 
-    let storedEmail = localStorage.getItem('email');
     let storedToken = localStorage.getItem('token');
-    if (storedEmail !== null && storedToken !== null) {
+    if (storedToken !== null) {
       this.loadingManager.setLoadingState(true);
       this.authService.resumeSession(storedToken)
         .finally(() => this.loadingManager.setLoadingState(false));
