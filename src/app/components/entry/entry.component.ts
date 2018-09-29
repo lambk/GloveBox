@@ -28,18 +28,18 @@ import { AlertType, AjaxEvent } from 'src/app/constants';
 })
 export class EntryComponent {
 
-  private loginSubmitSubject: Subject<void>
-  private registerSubmitSubject: Subject<void>
+  public loginSubmitSubject: Subject<void>
+  public registerSubmitSubject: Subject<void>
 
-  private collapsed: number = 0;
+  public collapsed: number = 0;
 
-  private alertdata: any = {
+  public alertdata: any = {
     msg: undefined,
     type: undefined,
     show: false
   };
 
-  private submitting: any = {
+  public submitting: any = {
     login: false,
     register: false
   }

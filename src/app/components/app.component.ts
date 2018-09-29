@@ -29,8 +29,8 @@ export class LoadingManager {
 })
 export class AppComponent implements OnInit {
   title = 'GloveBox';
-  private showEntry: boolean = true;
-  private showLoading: boolean = false;
+  public showEntry: boolean = true;
+  public showLoading: boolean = false;
 
   constructor(private router: Router, private authService: AuthService, private loadingManager: LoadingManager) {
   }

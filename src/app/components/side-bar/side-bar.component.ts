@@ -9,7 +9,7 @@ import { LoadingManager } from 'src/app/components/app.component';
   styleUrls: ['./side-bar.component.css']
 })
 export class SideBarComponent implements OnInit {
-  private href: string = '';
+  public href: string = '';
 
   constructor(private router: Router, private authService: AuthService, private loadingManager: LoadingManager) { }
 

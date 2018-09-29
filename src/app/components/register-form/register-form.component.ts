@@ -16,7 +16,7 @@ export class RegisterFormComponent implements OnInit {
   @Output() onAjax: EventEmitter<any> = new EventEmitter<any>();
 
   @ViewChild(NgForm) registerForm;
-  private data: any = {};
+  public data: any = {};
 
   constructor(private registerService: RegisterService) { }
 

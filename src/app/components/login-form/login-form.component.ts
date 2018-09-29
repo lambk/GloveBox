@@ -16,7 +16,7 @@ export class LoginFormComponent implements OnInit {
   @Output() onAjax: EventEmitter<any> = new EventEmitter<any>();
 
   @ViewChild(NgForm) loginForm;
-  private data: any = {};
+  public data: any = {};
 
   constructor(private AuthService: AuthService) { }
 
