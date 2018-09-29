@@ -44,7 +44,7 @@ export class RegisterFormComponent implements OnInit {
     }, (err) => {
       let error = err.status === 0 ? err.statusText : err.error;
       this.notifyFailure(error);
-    }).then(this.stopLoadingSpinner);
+    }).then(() => this.stopLoadingSpinner());
   }
 
   private notifySuccess(msg: string): void {

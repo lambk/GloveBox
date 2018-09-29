@@ -42,7 +42,7 @@ export class LoginFormComponent implements OnInit {
     }, (err) => {
       let error = err.status === 0 ? err.statusText : err.error;
       this.notifyFailure(error);
-    }).finally(this.stopLoadingSpinner);
+    }).finally(() => this.stopLoadingSpinner());
   }
 
   private notifySuccess(): void {
