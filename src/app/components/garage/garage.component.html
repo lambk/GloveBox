@@ -14,15 +14,10 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>ABC123</td>
-      <td>Toyota Celica 1994</td>
-      <td>2 Months</td>
-    </tr>
-    <tr>
-      <td>HHH555</td>
-      <td>Honda Integra 1996</td>
-      <td>15 Days</td>
+    <tr *ngFor="let vehicle of vehicles">
+      <td>{{vehicle.plate}}</td>
+      <td>{{vehicle.make}} {{vehicle.model}} {{vehicle.year}}</td>
+      <td>10 Days</td>
     </tr>
   </tbody>
 </table>
