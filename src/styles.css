@@ -2,3 +2,13 @@
   display: flex;
   flex-direction: column;
 }
+
+.input-group-text {
+  width: 100px;
+}
+
+.invalid {
+  background: #FF9595 !important;
+  border-color: red !important;
+  border-left-width: 0;
+}

@@ -12,10 +12,12 @@ import { AppComponent } from '../components/app.component';
 import { SideBarComponent } from '../components/side-bar/side-bar.component';
 import { OverviewComponent } from '../components/overview/overview.component';
 import { ServiceLogComponent } from '../components/service-log/service-log.component';
+import { GarageComponent } from '../components/garage/garage.component';
 import { SettingsComponent } from '../components/settings/settings.component';
 import { EntryComponent } from '../components/entry/entry.component';
 import { RegisterFormComponent } from '../components/register-form/register-form.component';
 import { LoginFormComponent } from '../components/login-form/login-form.component';
+import { RegisterVehicleFormComponent } from '../components/register-vehicle-form/register-vehicle-form.component';
 
 shim();
 
@@ -25,10 +27,12 @@ shim();
     SideBarComponent,
     OverviewComponent,
     ServiceLogComponent,
+    GarageComponent,
     SettingsComponent,
     EntryComponent,
     RegisterFormComponent,
-    LoginFormComponent
+    LoginFormComponent,
+    RegisterVehicleFormComponent
   ],
   imports: [
     BrowserModule,

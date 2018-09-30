@@ -1,0 +1,57 @@
+<form (keydown.enter)="submit()" #form="ngForm" novalidate>
+  <h5>General</h5>
+  <div class="row">
+    <div class="input-group mb-3 col-md-6">
+      <div class="input-group-prepend">
+        <span class="input-group-text required">Plate</span>
+      </div>
+      <input type="text" class="form-control" name="plate" #plate="ngModel" [(ngModel)]="data.plate"
+      [class.invalid]="form.submitted && plate.pristine && plate.invalid" required>
+    </div>
+  </div>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text required">Make</span>
+    </div>
+    <input type="text" class="form-control" name="make" #make="ngModel" [(ngModel)]="data.make"
+      [class.invalid]="form.submitted && make.pristine && make.invalid" required>
+  </div>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text required">Model</span>
+    </div>
+    <input type="text" class="form-control" name="model" #model="ngModel" [(ngModel)]="data.model"
+      [class.invalid]="form.submitted && model.pristine && model.invalid" required>
+  </div>
+  <div class="row">
+    <div class="input-group mb-3 col-md-6">
+      <div class="input-group-prepend">
+        <span class="input-group-text required">Year</span>
+      </div>
+      <input type="text" class="form-control" name="year" #year="ngModel" [(ngModel)]="data.year"
+      [class.invalid]="form.submitted && year.pristine && year.invalid" required pattern="\d{4}">
+    </div>
+    <div class="input-group mb-3 col-md-6">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Odometer</span>
+      </div>
+      <input type="text" class="form-control" name="odometer" #odometer="ngModel" [(ngModel)]="data.odometer"
+      [class.invalid]="form.submitted && odometer.pristine && odometer.invalid" pattern="\d{1,}">
+    </div>
+  </div>
+  <h5>WoF and Registration</h5>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text">WoF Expiry</span>
+    </div>
+    <input type="date" class="form-control" name="wofExpiry" #wofExpiry="ngModel" [(ngModel)]="data.wofExpiry"
+      [class.invalid]="form.submitted && wofExpiry.pristine && wofExpiry.invalid" date>
+  </div>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text" title="Country the vehicle is registered in">Country</span>
+    </div>
+    <input type="text" class="form-control" name="country" #country="ngModel" [(ngModel)]="data.country"
+      [class.invalid]="form.submitted && country.pristine && country.invalid" pattern="[A-Za-z\s]+">
+  </div>
+</form>

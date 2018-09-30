@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { OverviewComponent } from '../components/overview/overview.component';
 import { ServiceLogComponent } from '../components/service-log/service-log.component';
+import { GarageComponent } from '../components/garage/garage.component';
 import { SettingsComponent } from '../components/settings/settings.component';
 
 const routes: Routes = [
@@ -12,6 +13,10 @@ const routes: Routes = [
   {
     path: 'log',
     component: ServiceLogComponent
+  },
+  {
+    path: 'garage',
+    component: GarageComponent
   },
   {
     path: 'settings',
