@@ -16,44 +16,26 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  public async login(data: LoginDTO) {
-    let task = this.http.post(environment.server_url + '/auth/login', data, {responseType: 'json'}).toPromise();
-    task.then((res) => {
-      this.token = res['token'];
-      localStorage.setItem('token', res['token']);
-      this.loginObservable.next(true);
-    }, (err) => {});
-    return task;
+  public login(data: LoginDTO) {
+    return this.http.post(environment.server_url + '/auth/login', data, {responseType: 'json'});
   }
 
   public async resumeSession(token: string) {
-    let task = this.http.post(environment.server_url + '/auth/validate', undefined,
-      { headers: new HttpHeaders({
-        'token': token,
-        'Content-Type':'application/json'
-      }),
-      responseType: 'text'}).toPromise();
-    task.then((res) => {
-      this.token = token;
-      this.loginObservable.next(true);
-    }, (err) => {});
-    return task;
+    const headers = new HttpHeaders({
+      'token': token,
+      'Content-Type': 'application/json'
+    });
+    return this.http.post(environment.server_url + '/auth/validate', undefined,
+      { headers: headers, responseType: 'text' });
   }
 
   public async logout() {
-    let task = this.http.post(environment.server_url + '/auth/logout', undefined,
-      { headers: new HttpHeaders({
-        'token': this.token,
-        'Content-Type':'application/json'
-      }),
-      responseType: 'text'}).toPromise();
-    task.then(() => {
-      this.token = undefined;
-      localStorage.removeItem('email');
-      localStorage.removeItem('token');
-      this.loginObservable.next(false);
-    }, (err) => {});
-    return task;
+    const headers = new HttpHeaders({
+      'token': this.token,
+      'Content-Type': 'application/json'
+    });
+    return this.http.post(environment.server_url + '/auth/logout', undefined,
+      { headers: headers, responseType: 'text' });
   }
 
   public getLoginObservable(): Subject<boolean> {
