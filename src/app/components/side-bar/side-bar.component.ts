@@ -1,3 +1,4 @@
+import { LoadingService } from './../../services/loading/loading.service';
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
@@ -10,7 +11,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 export class SideBarComponent implements OnInit {
   public href = '';
 
-  constructor(private router: Router, private authService: AuthService) { }
+  constructor(private router: Router, private authService: AuthService, private loadingService: LoadingService) { }
 
   ngOnInit() {
     this.router.events.subscribe((e: any) => {
@@ -21,7 +22,12 @@ export class SideBarComponent implements OnInit {
   }
 
   logout(): void {
-    this.authService.logout().subscribe((res) => this.router.navigate(['/login']), (err) => this.router.navigate(['/login']));
-    // this.router.navigate(['/login']);
+    this.loadingService.setLoadingState(true);
+    this.authService.logout()
+      .subscribe()
+      .add(() => {
+        this.router.navigate(['/login']);
+        this.loadingService.setLoadingState(false);
+      });
   }
 }

@@ -1,4 +1,4 @@
-import { Subject } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 })
 export class LoadingService {
 
-  private loadingObservable = new Subject<boolean>();
+  private loadingObservable = new ReplaySubject<boolean>(1);
 
   constructor() { }
 
@@ -17,5 +17,4 @@ export class LoadingService {
   setLoadingState(showLoading: boolean) {
     this.loadingObservable.next(showLoading);
   }
-
 }
