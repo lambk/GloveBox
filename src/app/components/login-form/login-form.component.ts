@@ -29,13 +29,8 @@ export class LoginFormComponent implements OnInit {
     this.loginForm.submitted = true;
     this.loginForm.form.markAsPristine(); // Necessary to remove invalid styling once  the user starts modifying
     if (this.loginForm.invalid) { return; }
-    // Sets up the ajax data in the format expected by the server
-    const formdata = {
-      email: this.data.email,
-      password: this.data.password
-    };
     this.startLoadingSpinner();
-    this.authService.login(formdata).subscribe((response) => {
+    this.authService.login(this.data).subscribe((response) => {
       this.router.navigate(['/']);
     }, (err) => {
       const error = err.status !== 0 ? err.error : `Service error (Status code: ${err.status})`;

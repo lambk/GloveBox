@@ -29,15 +29,8 @@ export class RegisterFormComponent implements OnInit {
     this.registerForm.submitted = true;
     this.registerForm.form.markAsPristine(); // Necessary to remove invalid styling once  the user starts modifying
     if (this.registerForm.invalid) { return; }
-    // Sets up the ajax data in the format expected by the server
-    const formdata = {
-      email: this.data.email,
-      firstName: this.data.firstname,
-      lastName: this.data.lastname,
-      password: this.data.password
-    };
     this.startLoadingSpinner();
-    this.userService.register(formdata).subscribe((response) => {
+    this.userService.register(this.data).subscribe((response) => {
       // Reset the form
       this.registerForm.submitted = false;
       this.registerForm.form.reset();
