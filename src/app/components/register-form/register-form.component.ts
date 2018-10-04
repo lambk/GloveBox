@@ -1,3 +1,4 @@
+import { AlertService } from './../../services/alert/alert.service';
 import { UserService } from './../../services/user/user.service';
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
@@ -12,13 +13,13 @@ import { AlertType, AjaxEvent } from 'src/app/constants';
 export class RegisterFormComponent implements OnInit {
 
   @Input() submitSubject: Subject<void>;
-  @Output() submitEvent: EventEmitter<any> = new EventEmitter<any>();
-  @Output() ajaxEvent: EventEmitter<any> = new EventEmitter<any>();
+  @Output() submitEvent = new EventEmitter<any>();
+  @Output() ajaxEvent = new EventEmitter<any>();
 
   @ViewChild(NgForm) registerForm;
-  public data: any = {};
+  data: any = {};
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private alertService: AlertService) { }
 
   ngOnInit() {
     this.submitSubject.subscribe(() => this.submit());
@@ -37,43 +38,28 @@ export class RegisterFormComponent implements OnInit {
     };
     this.startLoadingSpinner();
     this.userService.register(formdata).subscribe((response) => {
-      this.stopLoadingSpinner();
       // Reset the form
       this.registerForm.submitted = false;
       this.registerForm.form.reset();
-      this.notifySuccess(response);
-    }, (err) => {
-      this.stopLoadingSpinner();
-      const error = err.status === 0 ? err.statusText : err.error;
-      this.notifyFailure(error);
-    });
-  }
-
-  private notifySuccess(msg: string): void {
-    this.submitEvent.emit({
-      successful: true,
-      feedback: {
-        msg: msg,
+      this.submitEvent.next();
+      this.alertService.sendAlert({
+        message: 'Account created',
         type: AlertType.SUCCESS
-      }
-    });
-  }
-
-  private notifyFailure(error: string): void {
-    this.submitEvent.emit({
-      successful: false,
-      feedback: {
-        msg: error,
+      });
+    }, (err) => {
+      const error = err.status !== 0 ? err.error : `Service error (Status code: ${err.status})`;
+      this.alertService.sendAlert({
+        message: error,
         type: AlertType.ERROR
-      }
-    });
+      });
+    }).add(() => this.stopLoadingSpinner());
   }
 
-  private startLoadingSpinner(): void {
+  private startLoadingSpinner() {
     this.ajaxEvent.emit({type: AjaxEvent.START});
   }
 
-  private stopLoadingSpinner(): void {
-    this.ajaxEvent.emit({type: AjaxEvent.END})
+  private stopLoadingSpinner() {
+    this.ajaxEvent.emit({type: AjaxEvent.END});
   }
 }

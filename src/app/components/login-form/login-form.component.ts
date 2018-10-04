@@ -14,7 +14,6 @@ import { AlertService } from '../../services/alert/alert.service';
 export class LoginFormComponent implements OnInit {
 
   @Input() submitSubject: Subject<void>;
-  @Output() submitEvent = new EventEmitter<any>();
   @Output() ajaxEvent = new EventEmitter<any>();
 
   @ViewChild(NgForm) loginForm;
@@ -39,23 +38,12 @@ export class LoginFormComponent implements OnInit {
     this.authService.login(formdata).subscribe((response) => {
       this.router.navigate(['/']);
     }, (err) => {
-      this.stopLoadingSpinner();
-      const error = err.status === 0 ? err.statusText : err.error;
+      const error = err.status !== 0 ? err.error : `Service error (Status code: ${err.status})`;
       this.alertService.sendAlert({
         message: error,
         type: AlertType.ERROR
       });
-    });
-  }
-
-  private notifyFailure(error: string): void {
-    this.submitEvent.emit({
-      successful: false,
-      feedback: {
-        msg: error,
-        type: AlertType.ERROR
-      }
-    });
+    }).add(() => this.stopLoadingSpinner());
   }
 
   private startLoadingSpinner(): void {

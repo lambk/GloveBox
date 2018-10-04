@@ -10,30 +10,27 @@ import { AlertType, AjaxEvent } from 'src/app/constants';
 })
 export class EntryComponent {
 
-  public loginSubmitSubject: Subject<void>
-  public registerSubmitSubject: Subject<void>
+  loginSubmitSubject = new Subject<void>();
+  registerSubmitSubject = new Subject<void>();
 
-  public collapsed: number = 0;
+  collapsed = 0;
 
-  public alertdata: any = {
+  alertdata: any = {
     msg: undefined,
     type: undefined,
     show: false
   };
 
-  public submitting: any = {
+  submitting: any = {
     login: false,
     register: false
-  }
+  };
 
-  constructor() {
-    this.loginSubmitSubject = new Subject<void>();
-    this.registerSubmitSubject = new Subject<void>();
-  }
+  constructor() {}
 
   onLoginClick(): void {
     if (this.collapsed === 1) {
-      //Submits the login form externally
+      // Submits the login form externally
       this.loginSubmitSubject.next();
     } else {
       this.collapsed = 1;
@@ -42,7 +39,7 @@ export class EntryComponent {
 
   onRegisterClick(): void {
     if (this.collapsed === 2) {
-      //Submits the registration form externally
+      // Submits the registration form externally
       this.registerSubmitSubject.next();
     } else {
       this.collapsed = 2;
@@ -50,19 +47,12 @@ export class EntryComponent {
   }
 
   /* Sets up the alerts from the login or registration submission */
-  onSubformSubmit(event): void {
-    if (event.successful) {
-      this.collapsed = 0;
-    }
-    if (event.feedback) {
-      this.alertdata.msg = event.feedback.msg;
-      this.alertdata.type = event.feedback.type;
-      this.alertdata.show = true;
-    }
+  onRegistration(): void {
+    this.collapsed = 0;
   }
 
   showAjaxLoader(event, source): void {
-    let show = event.type === AjaxEvent.START;
+    const show = event.type === AjaxEvent.START;
     if (source === 'register') {
       this.submitting.register = show;
     } else {
