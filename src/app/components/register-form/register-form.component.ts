@@ -1,7 +1,8 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { AlertService } from './../../services/alert/alert.service';
+import { UserService } from './../../services/user/user.service';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { RegisterService } from 'src/app/services/register/register.service';
 import { AlertType, AjaxEvent } from 'src/app/constants';
 
 @Component({
@@ -12,50 +13,46 @@ import { AlertType, AjaxEvent } from 'src/app/constants';
 export class RegisterFormComponent implements OnInit {
 
   @Input() submitSubject: Subject<void>;
-  @Output() onSubmit: EventEmitter<any> = new EventEmitter<any>();
-  @Output() onAjax: EventEmitter<any> = new EventEmitter<any>();
+  @Output() submitEvent = new EventEmitter<any>();
+  @Output() ajaxEvent = new EventEmitter<any>();
 
-  @ViewChild(NgForm) form;
-  private data: any = {};
+  @ViewChild(NgForm) registerForm;
+  data: any = {};
 
-  constructor(private registerService: RegisterService) { }
+  constructor(private userService: UserService, private alertService: AlertService) { }
 
   ngOnInit() {
     this.submitSubject.subscribe(() => this.submit());
   }
 
   submit(): void {
-    this.form.submitted = true;
-    this.form.form.markAsPristine(); //Necessary to remove invalid styling once  the user starts modifying
-    if (this.form.invalid) return;
-    //Sets up the ajax data in the format expected by the server
-    let formdata = {
-      email: this.data.email,
-      firstName: this.data.firstname,
-      lastName: this.data.lastname,
-      password: this.data.password
-    };
-    this.onAjax.emit({type: AjaxEvent.START});
-    this.registerService.registerUser(formdata).then((response) => {
-      //Reset the form
-      this.form.submitted = false;
-      this.form.form.reset();
-      this.onSubmit.emit({
-        successful: true,
-        feedback: {
-          msg: response,
-          type: AlertType.SUCCESS
-        }
+    this.registerForm.submitted = true;
+    this.registerForm.form.markAsPristine(); // Necessary to remove invalid styling once  the user starts modifying
+    if (this.registerForm.invalid) { return; }
+    this.startLoadingSpinner();
+    this.userService.register(this.data).subscribe((response) => {
+      // Reset the form
+      this.registerForm.submitted = false;
+      this.registerForm.form.reset();
+      this.submitEvent.next();
+      this.alertService.sendAlert({
+        message: 'Account created',
+        type: AlertType.SUCCESS
       });
     }, (err) => {
-      let errorMsg = err.status === 0 ? err.statusText : err.error;
-      this.onSubmit.emit({
-        successful: false,
-        feedback: {
-          msg: errorMsg,
-          type: AlertType.ERROR
-        }
+      const error = err.status !== 0 ? err.error : `Service error (Status code: ${err.status})`;
+      this.alertService.sendAlert({
+        message: error,
+        type: AlertType.ERROR
       });
-    }).then(() => this.onAjax.emit({type: AjaxEvent.END}));
+    }).add(() => this.stopLoadingSpinner());
+  }
+
+  private startLoadingSpinner() {
+    this.ajaxEvent.emit({type: AjaxEvent.START});
+  }
+
+  private stopLoadingSpinner() {
+    this.ajaxEvent.emit({type: AjaxEvent.END});
   }
 }

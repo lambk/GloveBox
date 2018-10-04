@@ -7,6 +7,10 @@
     <i class="side-bar-icon fa fa-book"></i>
     <span class="side-bar-label">Service Log</span>
   </div>
+  <div routerLink="/garage" class="side-bar-icon-container" [class.active]="href === '/garage'">
+    <i class="side-bar-icon fa fa-warehouse"></i>
+    <span class="side-bar-label">Garage</span>
+  </div>
   <div routerLink="/settings" class="side-bar-icon-container" [class.active]="href === '/settings'">
     <i class="side-bar-icon fa fa-cogs"></i>
     <span class="side-bar-label">Settings</span>

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { RegisterFormComponent } from 'src/app/components/register-form/register-form.component';
 import { Subject } from 'rxjs';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { AlertType, AjaxEvent } from 'src/app/constants';
@@ -7,51 +6,31 @@ import { AlertType, AjaxEvent } from 'src/app/constants';
 @Component({
   selector: 'app-entry',
   templateUrl: './entry.component.html',
-  styleUrls: ['./entry.component.css'],
-  animations: [
-    trigger('alertFade', [
-      transition(':enter', [
-        style({opacity: 0, transform: 'translateY(-10px)'}),
-        animate(500, style({
-          opacity: 1,
-          transform: 'translateY(0)'
-        }))
-      ]),
-      transition(':leave', [
-        animate(500, style({
-          opacity:0,
-          transform: 'translateY(-10px)'
-        }))
-      ])
-    ])
-  ]
+  styleUrls: ['./entry.component.css']
 })
 export class EntryComponent {
 
-  private loginSubmitSubject: Subject<void>
-  private registerSubmitSubject: Subject<void>
+  loginSubmitSubject = new Subject<void>();
+  registerSubmitSubject = new Subject<void>();
 
-  private collapsed: number = 0;
+  collapsed = 0;
 
-  private alertdata: any = {
+  alertdata: any = {
     msg: undefined,
     type: undefined,
     show: false
   };
 
-  private submitting: any = {
+  submitting: any = {
     login: false,
     register: false
-  }
+  };
 
-  constructor() {
-    this.loginSubmitSubject = new Subject<void>();
-    this.registerSubmitSubject = new Subject<void>();
-  }
+  constructor() {}
 
   onLoginClick(): void {
     if (this.collapsed === 1) {
-      //Submits the login form externally
+      // Submits the login form externally
       this.loginSubmitSubject.next();
     } else {
       this.collapsed = 1;
@@ -60,7 +39,7 @@ export class EntryComponent {
 
   onRegisterClick(): void {
     if (this.collapsed === 2) {
-      //Submits the registration form externally
+      // Submits the registration form externally
       this.registerSubmitSubject.next();
     } else {
       this.collapsed = 2;
@@ -68,19 +47,12 @@ export class EntryComponent {
   }
 
   /* Sets up the alerts from the login or registration submission */
-  onSubformSubmit(event): void {
-    if (event.successful) {
-      this.collapsed = 0;
-    }
-    if (event.feedback) {
-      this.alertdata.msg = event.feedback.msg;
-      this.alertdata.type = event.feedback.type;
-      this.alertdata.show = true;
-    }
+  onRegistration(): void {
+    this.collapsed = 0;
   }
 
   showAjaxLoader(event, source): void {
-    let show = event.type === AjaxEvent.START;
+    const show = event.type === AjaxEvent.START;
     if (source === 'register') {
       this.submitting.register = show;
     } else {

@@ -1,8 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { Router } from '@angular/router';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { AuthService } from 'src/app/services/auth/auth.service';
 import { AlertType, AjaxEvent } from 'src/app/constants';
+import { AlertService } from '../../services/alert/alert.service';
 
 @Component({
   selector: 'app-login-form',
@@ -12,45 +14,39 @@ import { AlertType, AjaxEvent } from 'src/app/constants';
 export class LoginFormComponent implements OnInit {
 
   @Input() submitSubject: Subject<void>;
-  @Output() onSubmit: EventEmitter<any> = new EventEmitter<any>();
-  @Output() onAjax: EventEmitter<any> = new EventEmitter<any>();
+  @Output() ajaxEvent = new EventEmitter<any>();
 
-  @ViewChild(NgForm) form;
-  private data: any = {};
+  @ViewChild(NgForm) loginForm;
+  public data: any = {};
 
-  constructor(private AuthService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router, private alertService: AlertService) { }
 
   ngOnInit() {
     this.submitSubject.subscribe(() => this.submit());
   }
 
   submit(): void {
-    this.form.submitted = true;
-    this.form.form.markAsPristine(); //Necessary to remove invalid styling once  the user starts modifying
-    if (this.form.invalid) return;
-    //Sets up the ajax data in the format expected by the server
-    let formdata = {
-      email: this.data.email,
-      password: this.data.password
-    };
-    this.onAjax.emit({type: AjaxEvent.START});
-    this.AuthService.login(formdata).then((response) => {
-      //Reset the form
-      this.form.submitted = false;
-      this.form.form.reset();
-      this.onSubmit.emit({
-        successful: true
-      });
+    this.loginForm.submitted = true;
+    this.loginForm.form.markAsPristine(); // Necessary to remove invalid styling once  the user starts modifying
+    if (this.loginForm.invalid) { return; }
+    this.startLoadingSpinner();
+    this.authService.login(this.data).subscribe((response) => {
+      this.router.navigate(['/']);
     }, (err) => {
-      let errorMsg = err.status === 0 ? err.statusText : err.error;
-      this.onSubmit.emit({
-        successful: false,
-        feedback: {
-          msg: errorMsg,
-          type: AlertType.ERROR
-        }
+      const error = err.status !== 0 ? err.error : `Service error (Status code: ${err.status})`;
+      this.alertService.sendAlert({
+        message: error,
+        type: AlertType.ERROR
       });
-    }).then(() => this.onAjax.emit({type: AjaxEvent.END}));
+    }).add(() => this.stopLoadingSpinner());
+  }
+
+  private startLoadingSpinner(): void {
+    this.ajaxEvent.emit({type: AjaxEvent.START});
+  }
+
+  private stopLoadingSpinner(): void {
+    this.ajaxEvent.emit({type: AjaxEvent.END});
   }
 
 }
