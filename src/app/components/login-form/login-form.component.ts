@@ -1,8 +1,10 @@
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { Router } from '@angular/router';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { AlertType, AjaxEvent } from 'src/app/constants';
+import { AlertService } from '../../services/alert/alert.service';
 
 @Component({
   selector: 'app-login-form',
@@ -18,7 +20,7 @@ export class LoginFormComponent implements OnInit {
   @ViewChild(NgForm) loginForm;
   public data: any = {};
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router, private alertService: AlertService) { }
 
   ngOnInit() {
     this.submitSubject.subscribe(() => this.submit());
@@ -35,21 +37,14 @@ export class LoginFormComponent implements OnInit {
     };
     this.startLoadingSpinner();
     this.authService.login(formdata).subscribe((response) => {
-      this.stopLoadingSpinner();
-      // Reset the form
-      this.loginForm.submitted = false;
-      this.loginForm.form.reset();
-      this.notifySuccess();
+      this.router.navigate(['/']);
     }, (err) => {
       this.stopLoadingSpinner();
       const error = err.status === 0 ? err.statusText : err.error;
-      this.notifyFailure(error);
-    });
-  }
-
-  private notifySuccess(): void {
-    this.submitEvent.emit({
-      successful: true
+      this.alertService.sendAlert({
+        message: error,
+        type: AlertType.ERROR
+      });
     });
   }
 

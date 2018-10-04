@@ -1,12 +1,7 @@
 <div class="entry-window col-md-7 col-sm-9">
   <h1>GloveBox</h1>
   <hr>
-  <div class="alert" *ngIf="alertdata.show" [@alertFade] [ngClass]="alertdata.type === 'SUCCESS' ? 'alert-success' : 'alert-danger'">
-    {{alertdata.msg}}
-    <button type="button" class="close" (click)="alertdata.show = false">
-      <span>&times;</span>
-    </button>
-  </div>
+  <app-alert></app-alert>
   <div>
     <button type="button" class="btn btn-lg btn-block btn-primary" [class.dropdown-btn-open]="collapsed === 1"
     [class.greyed]="collapsed === 2" [disabled]="submitting.login" (click)="onLoginClick()">

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { LoadingManager } from 'src/app/components/app.component';
 
 @Component({
   selector: 'app-side-bar',
@@ -9,9 +8,9 @@ import { LoadingManager } from 'src/app/components/app.component';
   styleUrls: ['./side-bar.component.css']
 })
 export class SideBarComponent implements OnInit {
-  public href: string = '';
+  public href = '';
 
-  constructor(private router: Router, private authService: AuthService, private loadingManager: LoadingManager) { }
+  constructor(private router: Router, private authService: AuthService) { }
 
   ngOnInit() {
     this.router.events.subscribe((e: any) => {
@@ -22,8 +21,7 @@ export class SideBarComponent implements OnInit {
   }
 
   logout(): void {
-    this.loadingManager.setLoadingState(true);
-    this.authService.logout().then()
-      .then(() => this.loadingManager.setLoadingState(false));
+    this.authService.logout().subscribe((res) => this.router.navigate(['/login']), (err) => this.router.navigate(['/login']));
+    // this.router.navigate(['/login']);
   }
 }

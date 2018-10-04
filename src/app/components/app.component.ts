@@ -29,24 +29,27 @@ export class LoadingManager {
 })
 export class AppComponent implements OnInit {
   title = 'GloveBox';
-  public showEntry: boolean = true;
-  public showLoading: boolean = false;
+  showLoading = false;
+  href: string = undefined;
 
   constructor(private router: Router, private authService: AuthService, private loadingManager: LoadingManager) {
   }
 
   ngOnInit() {
-    if (this.showEntry && window.location.pathname !== '/') {
-      this.router.navigateByUrl('/');
-    }
-    this.authService.getLoginObservable().subscribe((loggedIn) => this.showEntry = !loggedIn);
+    this.router.events.subscribe((e: any) => {
+      if (e instanceof NavigationEnd) {
+        this.href = e.url;
+      }
+    });
     this.loadingManager.getLoadingObservable().subscribe((status) => this.showLoading = status);
 
-    let storedToken = localStorage.getItem('token');
-    if (storedToken !== null) {
+    if (localStorage.getItem('token') !== null) {
       this.loadingManager.setLoadingState(true);
-      this.authService.resumeSession(storedToken)
-        .finally(() => this.loadingManager.setLoadingState(false));
+      this.authService.resumeSession().subscribe((res) => {
+        this.router.navigate(['/']);
+      }, (err) => {
+        this.router.navigate(['/login']);
+      });
     }
   }
 }

@@ -1,0 +1,6 @@
+<div class="alert" *ngIf="show" [@alertFade] [ngClass]="type === 'SUCCESS' ? 'alert-success' : 'alert-danger'">
+  {{message}}
+  <button type="button" class="close" (click)="closeAlert()">
+    <span>&times;</span>
+  </button>
+</div>

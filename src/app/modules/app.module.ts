@@ -18,6 +18,8 @@ import { EntryComponent } from '../components/entry/entry.component';
 import { RegisterFormComponent } from '../components/register-form/register-form.component';
 import { LoginFormComponent } from '../components/login-form/login-form.component';
 import { RegisterVehicleFormComponent } from '../components/register-vehicle-form/register-vehicle-form.component';
+import { LoadingOverlayComponent } from '../components/loading-overlay/loading-overlay.component';
+import { AlertComponent } from '../components/alert/alert.component';
 
 shim();
 
@@ -32,7 +34,9 @@ shim();
     EntryComponent,
     RegisterFormComponent,
     LoginFormComponent,
-    RegisterVehicleFormComponent
+    RegisterVehicleFormComponent,
+    LoadingOverlayComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,

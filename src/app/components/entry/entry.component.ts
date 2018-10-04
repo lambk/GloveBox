@@ -6,24 +6,7 @@ import { AlertType, AjaxEvent } from 'src/app/constants';
 @Component({
   selector: 'app-entry',
   templateUrl: './entry.component.html',
-  styleUrls: ['./entry.component.css'],
-  animations: [
-    trigger('alertFade', [
-      transition(':enter', [
-        style({opacity: 0, transform: 'translateY(-10px)'}),
-        animate(500, style({
-          opacity: 1,
-          transform: 'translateY(0)'
-        }))
-      ]),
-      transition(':leave', [
-        animate(500, style({
-          opacity:0,
-          transform: 'translateY(-10px)'
-        }))
-      ])
-    ])
-  ]
+  styleUrls: ['./entry.component.css']
 })
 export class EntryComponent {
 

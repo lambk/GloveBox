@@ -1,19 +1,9 @@
 <!-- Empty div that acts as a drag handle due to hidden titleBar -->
 <div class="drag-bar"></div>
-<div class="loading-overlay" *ngIf="showLoading">
-  <div class="centre-container col-sm-6 col-md-4">
-    <h2>
-      <img src="assets/spinner-lg-black.gif" class="mr-2" height="40" width="40">
-      <i class="align-middle">Loading</i>
-    </h2>
+<app-loading-overlay></app-loading-overlay>
+<div class="main-window">
+  <app-side-bar *ngIf="href !== '/login'"></app-side-bar>
+  <div class="container-fluid" style="padding-top: 30px">
+    <router-outlet></router-outlet>
   </div>
 </div>
-<app-entry *ngIf="showEntry; else main"></app-entry>
-<ng-template #main>
-  <div style="display: flex; height: 100vh">
-    <app-side-bar style="width: 100px"></app-side-bar>
-    <div class="container-fluid" style="padding-top: 30px">
-      <router-outlet></router-outlet>
-    </div>
-  </div>
-</ng-template>
