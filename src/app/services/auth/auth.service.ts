@@ -1,9 +1,8 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { map, shareReplay } from 'rxjs/operators';
 import { LoginDTO } from 'src/app/interfaces/login.dto';
 import { environment } from 'src/environments/environment';
-import { Subject } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'

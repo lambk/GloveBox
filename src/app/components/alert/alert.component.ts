@@ -18,7 +18,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
       ]),
       transition(':leave', [
         animate(500, style({
-          opacity:0,
+          opacity: 0,
           transform: 'translateY(-10px)'
         }))
       ])

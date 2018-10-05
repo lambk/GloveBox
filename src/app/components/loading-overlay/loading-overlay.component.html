@@ -1,8 +1,8 @@
-<div class="loading-overlay" *ngIf="show">
+<div class="loading-overlay" *ngIf="show" [@loadingFade]>
   <div class="centre-container col-sm-6 col-md-4">
     <h2>
       <img src="assets/spinner-lg-black.gif" class="mr-2" height="40" width="40">
-      <i class="align-middle">Loading</i>
+      <i class="align-middle">{{message}}</i>
     </h2>
   </div>
 </div>

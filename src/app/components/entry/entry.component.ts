@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Subject } from 'rxjs';
-import { trigger, state, style, animate, transition } from '@angular/animations';
-import { AlertType, AjaxEvent } from 'src/app/constants';
+import { AjaxEvent } from 'src/app/constants';
 
 @Component({
   selector: 'app-entry',
