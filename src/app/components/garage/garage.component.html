@@ -31,13 +31,13 @@
         </button>
       </div>
       <div class="modal-body">
-        <app-register-vehicle-form></app-register-vehicle-form>
+        <app-register-vehicle-form [registerSubject]="registerSubject"></app-register-vehicle-form>
       </div>
       <div class="modal-footer">
         <div class="w-100">
           <div class="row">
             <div class="col-md-6 order-md-2 mb-2 mb-md-0">
-              <button type="button" class="btn btn-success btn-block">Register</button>
+              <button type="button" class="btn btn-success btn-block" (click)="onRegisterClick()">Register</button>
             </div>
             <div class="col-md-6 order-md-1">
               <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">Cancel</button>

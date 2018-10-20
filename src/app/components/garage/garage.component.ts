@@ -1,3 +1,4 @@
+import { Subject } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -21,10 +22,17 @@ export class GarageComponent implements OnInit {
       year: 1994
     }
   ];
+  public registerSubject: Subject<void>;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
+    this.registerSubject = new Subject();
+  }
+
+  onRegisterClick() {
+    this.registerSubject.next();
   }
 
 }
