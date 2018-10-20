@@ -14,7 +14,7 @@ export class AuthService {
   public login(data: LoginDTO) {
     const ajax = this.http.post(environment.server_url + '/auth/login', data,
       {responseType: 'json'}).pipe(shareReplay(1));
-    ajax.pipe(map(res => res['token'])).subscribe(this.setToken);
+    ajax.subscribe(this.saveLoginData);
     return ajax;
   }
 
@@ -23,9 +23,9 @@ export class AuthService {
       'token': localStorage.getItem('token'),
       'Content-Type': 'application/json'
     });
-    const ajax = this.http.post(environment.server_url + '/auth/validate', {},
+    const ajax = this.http.post(environment.server_url + '/auth/validate', localStorage.getItem('id'),
       { headers: headers, responseType: 'text' }).pipe(shareReplay(1));
-    ajax.subscribe((res) => {}, this.removeToken);
+    ajax.subscribe((res) => {}, this.removeLoginData);
     return ajax;
   }
 
@@ -34,17 +34,19 @@ export class AuthService {
       'token': localStorage.getItem('token'),
       'Content-Type': 'application/json'
     });
-    const ajax = this.http.post(environment.server_url + '/auth/logout', {},
+    const ajax = this.http.post(environment.server_url + '/auth/logout', localStorage.getItem('id'),
       { headers: headers, responseType: 'text' }).pipe(shareReplay(1));
-    ajax.subscribe(this.removeToken, this.removeToken);
+    ajax.subscribe(this.removeLoginData, this.removeLoginData);
     return ajax;
   }
 
-  private setToken(token: string) {
-    localStorage.setItem('token', token);
+  private saveLoginData(data) {
+    localStorage.setItem('id', data.id);
+    localStorage.setItem('token', data.token);
   }
 
-  private removeToken() {
+  private removeLoginData() {
+    localStorage.removeItem('id');
     localStorage.removeItem('token');
   }
 }

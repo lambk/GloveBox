@@ -51,7 +51,7 @@
     <div class="input-group-prepend">
       <span class="input-group-text" title="Country the vehicle is registered in">Country</span>
     </div>
-    <input type="text" class="form-control" name="country" #country="ngModel" [(ngModel)]="data.country"
+    <input type="text" class="form-control" name="country" #country="ngModel" [(ngModel)]="data.countryRegistered"
       [class.invalid]="form.submitted && country.pristine && country.invalid" pattern="[A-Za-z\s]+">
   </div>
 </form>
