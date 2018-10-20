@@ -1,6 +1,9 @@
+import { AlertService } from './../../services/alert/alert.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { VehicleService } from './../../services/vehicle/vehicle.service';
+import * as $ from 'jquery';
+import { AlertType } from 'src/app/constants';
 
 @Component({
   selector: 'app-register-vehicle-form',
@@ -12,7 +15,7 @@ export class RegisterVehicleFormComponent implements OnInit {
   @ViewChild(NgForm) registerVehicleForm;
   public data: any = {};
 
-  constructor(private vehicleService: VehicleService) { }
+  constructor(private vehicleService: VehicleService, private alertService: AlertService) { }
 
   ngOnInit() {
   }
@@ -24,9 +27,9 @@ export class RegisterVehicleFormComponent implements OnInit {
       return;
     }
     this.vehicleService.register(this.data).subscribe((res) => {
-      alert('success');
+      $('#registerVehicleModal .close').click();
     }, (err) => {
-      alert('err');
+      this.alertService.sendAlert({message: err.error, type: AlertType.ERROR});
     });
   }
 
