@@ -12,3 +12,7 @@
   border-color: red !important;
   border-left-width: 0;
 }
+
+.ajaxLoader {
+  vertical-align: top;
+}

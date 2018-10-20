@@ -1,3 +1,4 @@
+import { AjaxEvent } from './../../constants';
 import { Subject } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 
@@ -23,6 +24,7 @@ export class GarageComponent implements OnInit {
     }
   ];
   public registerSubject: Subject<void>;
+  public showAjaxLoader = false;
 
   constructor() {
   }
@@ -35,4 +37,11 @@ export class GarageComponent implements OnInit {
     this.registerSubject.next();
   }
 
+  onAjaxEvent(event: AjaxEvent) {
+    if (event === AjaxEvent.START) {
+      this.showAjaxLoader = true;
+    } else {
+      this.showAjaxLoader = false;
+    }
+  }
 }

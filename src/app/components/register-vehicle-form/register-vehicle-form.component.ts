@@ -1,6 +1,7 @@
+import { AjaxEvent } from './../../constants';
 import { Subject } from 'rxjs';
 import { AlertService } from './../../services/alert/alert.service';
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, EventEmitter, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { VehicleService } from './../../services/vehicle/vehicle.service';
 import * as $ from 'jquery';
@@ -14,6 +15,7 @@ import { AlertType } from 'src/app/constants';
 export class RegisterVehicleFormComponent implements OnInit {
 
   @Input() registerSubject: Subject<void>;
+  @Output() ajaxEvent = new EventEmitter<AjaxEvent>();
   @ViewChild(NgForm) registerVehicleForm;
   public data: any = {};
 
@@ -29,11 +31,12 @@ export class RegisterVehicleFormComponent implements OnInit {
     if (this.registerVehicleForm.invalid) {
       return;
     }
+    this.ajaxEvent.emit(AjaxEvent.START);
     this.vehicleService.register(this.data).subscribe((res) => {
       $('#registerVehicleModal .close').click();
     }, (err) => {
       this.alertService.sendAlert({message: err.error, type: AlertType.ERROR});
-    });
+    }).add(() => this.ajaxEvent.emit(AjaxEvent.END));
   }
 
 }
