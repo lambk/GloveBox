@@ -44,4 +44,8 @@ export class GarageComponent implements OnInit {
       this.isSubmitting = false;
     }
   }
+
+  onVehicleRegistration(vehicle: any) {
+    this.vehicles.push(vehicle);
+  }
 }

@@ -31,7 +31,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <app-register-vehicle-form [registerSubject]="registerSubject" (submitEvent)="onSubmitEvent($event)"></app-register-vehicle-form>
+        <app-register-vehicle-form [registerSubject]="registerSubject" (submitEvent)="onSubmitEvent($event)" (registrationEvent)="onVehicleRegistration($event)"></app-register-vehicle-form>
       </div>
       <div class="modal-footer">
         <div class="w-100">
