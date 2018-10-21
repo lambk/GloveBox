@@ -1,16 +1,18 @@
 <form (keydown.enter)="submit()" #form="ngForm" novalidate>
-  <div class="input-group mb-3">
-    <div class="input-group-prepend">
-      <span class="input-group-text">Email</span>
+  <fieldset [disabled]="disableForm">
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Email</span>
+      </div>
+      <input type="text" class="form-control" name="email" #email="ngModel" [(ngModel)]="data.email"
+        [class.invalid]="form.submitted && email.pristine && email.invalid" required email>
     </div>
-    <input type="text" class="form-control" name="email" #email="ngModel" [(ngModel)]="data.email"
-      [class.invalid]="form.submitted && email.pristine && email.invalid" required email>
-  </div>
-  <div class="input-group mb-3">
-    <div class="input-group-prepend">
-      <span class="input-group-text">Password</span>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Password</span>
+      </div>
+      <input type="password" class="form-control" name="password" #password="ngModel" [(ngModel)]="data.password"
+        [class.invalid]="form.submitted && password.pristine && password.invalid" required>
     </div>
-    <input type="password" class="form-control" name="password" #password="ngModel" [(ngModel)]="data.password"
-      [class.invalid]="form.submitted && password.pristine && password.invalid" required>
-  </div>
+  </fieldset>
 </form>

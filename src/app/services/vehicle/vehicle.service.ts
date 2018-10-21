@@ -15,6 +15,7 @@ export class VehicleService {
       'token': localStorage.getItem('token'),
       'Content-Type': 'application/json'
     });
-    return this.http.post(environment.server_url + '/vehicles', vehicle, {headers: headers, responseType: 'text'});
+    return this.http.post(`${environment.server_url}/vehicles/${localStorage.getItem('id')}`,
+      vehicle, {headers: headers, responseType: 'text'});
   }
 }

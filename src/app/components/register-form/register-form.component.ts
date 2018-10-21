@@ -3,7 +3,7 @@ import { UserService } from './../../services/user/user.service';
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { AlertType, AjaxEvent } from 'src/app/constants';
+import { AlertType, SubmitEvent } from 'src/app/constants';
 
 @Component({
   selector: 'app-register-form',
@@ -13,11 +13,12 @@ import { AlertType, AjaxEvent } from 'src/app/constants';
 export class RegisterFormComponent implements OnInit {
 
   @Input() submitSubject: Subject<void>;
-  @Output() submitEvent = new EventEmitter<any>();
-  @Output() ajaxEvent = new EventEmitter<any>();
+  @Output() submitEvent = new EventEmitter<SubmitEvent>();
+  @Output() registrationEvent = new EventEmitter<void>();
 
   @ViewChild(NgForm) registerForm;
-  data: any = {};
+  public data: any = {};
+  public disableForm = false;
 
   constructor(private userService: UserService, private alertService: AlertService) { }
 
@@ -29,12 +30,12 @@ export class RegisterFormComponent implements OnInit {
     this.registerForm.submitted = true;
     this.registerForm.form.markAsPristine(); // Necessary to remove invalid styling once  the user starts modifying
     if (this.registerForm.invalid) { return; }
-    this.startLoadingSpinner();
+    this.onSubmitStart();
     this.userService.register(this.data).subscribe((response) => {
       // Reset the form
       this.registerForm.submitted = false;
       this.registerForm.form.reset();
-      this.submitEvent.next();
+      this.registrationEvent.next();
       this.alertService.sendAlert({
         message: 'Account created',
         type: AlertType.SUCCESS
@@ -45,14 +46,16 @@ export class RegisterFormComponent implements OnInit {
         message: error,
         type: AlertType.ERROR
       });
-    }).add(() => this.stopLoadingSpinner());
+    }).add(() => this.onSubmitEnd());
   }
 
-  private startLoadingSpinner() {
-    this.ajaxEvent.emit({type: AjaxEvent.START});
+  private onSubmitStart() {
+    this.disableForm = true;
+    this.submitEvent.emit(SubmitEvent.START);
   }
 
-  private stopLoadingSpinner() {
-    this.ajaxEvent.emit({type: AjaxEvent.END});
+  private onSubmitEnd() {
+    this.disableForm = false;
+    this.submitEvent.emit(SubmitEvent.END);
   }
 }
