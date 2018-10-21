@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Subject } from 'rxjs';
-import { AjaxEvent } from 'src/app/constants';
+import { SubmitEvent } from 'src/app/constants';
 
 @Component({
   selector: 'app-entry',
@@ -51,7 +51,7 @@ export class EntryComponent {
   }
 
   showAjaxLoader(event, source): void {
-    const show = event.type === AjaxEvent.START;
+    const show = event === SubmitEvent.START;
     if (source === 'register') {
       this.submitting.register = show;
     } else {

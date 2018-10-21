@@ -1,4 +1,4 @@
-import { AjaxEvent } from './../../constants';
+import { SubmitEvent } from './../../constants';
 import { Subject } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 
@@ -24,7 +24,7 @@ export class GarageComponent implements OnInit {
     }
   ];
   public registerSubject: Subject<void>;
-  public showAjaxLoader = false;
+  public isSubmitting = false;
 
   constructor() {
   }
@@ -37,11 +37,11 @@ export class GarageComponent implements OnInit {
     this.registerSubject.next();
   }
 
-  onAjaxEvent(event: AjaxEvent) {
-    if (event === AjaxEvent.START) {
-      this.showAjaxLoader = true;
+  onSubmitEvent(event: SubmitEvent) {
+    if (event === SubmitEvent.START) {
+      this.isSubmitting = true;
     } else {
-      this.showAjaxLoader = false;
+      this.isSubmitting = false;
     }
   }
 }

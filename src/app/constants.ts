@@ -5,7 +5,7 @@ export enum AlertType {
   ERROR = 'ERROR'
 }
 
-export enum AjaxEvent {
+export enum SubmitEvent {
   START = 'START',
   END = 'END'
 }

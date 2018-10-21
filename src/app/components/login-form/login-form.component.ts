@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { AlertType, AjaxEvent } from 'src/app/constants';
+import { AlertType, SubmitEvent } from 'src/app/constants';
 import { AlertService } from '../../services/alert/alert.service';
 
 @Component({
@@ -14,10 +14,11 @@ import { AlertService } from '../../services/alert/alert.service';
 export class LoginFormComponent implements OnInit {
 
   @Input() submitSubject: Subject<void>;
-  @Output() ajaxEvent = new EventEmitter<any>();
+  @Output() submitEvent = new EventEmitter<SubmitEvent>();
 
   @ViewChild(NgForm) loginForm;
   public data: any = {};
+  public disableForm = false;
 
   constructor(private authService: AuthService, private router: Router, private alertService: AlertService) { }
 
@@ -29,7 +30,7 @@ export class LoginFormComponent implements OnInit {
     this.loginForm.submitted = true;
     this.loginForm.form.markAsPristine(); // Necessary to remove invalid styling once  the user starts modifying
     if (this.loginForm.invalid) { return; }
-    this.startLoadingSpinner();
+    this.onSubmitStart();
     this.authService.login(this.data).subscribe((response) => {
       this.router.navigate(['/']);
     }, (err) => {
@@ -38,15 +39,16 @@ export class LoginFormComponent implements OnInit {
         message: error,
         type: AlertType.ERROR
       });
-    }).add(() => this.stopLoadingSpinner());
+    }).add(() => this.onSubmitEnd());
   }
 
-  private startLoadingSpinner(): void {
-    this.ajaxEvent.emit({type: AjaxEvent.START});
+  private onSubmitStart(): void {
+    this.disableForm = true;
+    this.submitEvent.emit(SubmitEvent.START);
   }
 
-  private stopLoadingSpinner(): void {
-    this.ajaxEvent.emit({type: AjaxEvent.END});
+  private onSubmitEnd(): void {
+    this.disableForm = false;
+    this.submitEvent.emit(SubmitEvent.END);
   }
-
 }
