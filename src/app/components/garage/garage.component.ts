@@ -1,6 +1,8 @@
+import { VehicleService } from './../../services/vehicle/vehicle.service';
 import { SubmitEvent } from './../../constants';
 import { Subject } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
+import { Vehicle } from 'src/app/interfaces/vehicle.model';
 
 @Component({
   selector: 'app-garage',
@@ -9,28 +11,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GarageComponent implements OnInit {
 
-  public vehicles = [
-    {
-      plate: 'ABC123',
-      make: 'Toyota',
-      model: 'Celica',
-      year: 1994
-    },
-    {
-      plate: 'HHH111',
-      make: 'Honda',
-      model: 'Integra',
-      year: 1994
-    }
-  ];
+  public vehicles: Vehicle[];
   public registerSubject: Subject<void>;
   public isSubmitting = false;
 
-  constructor() {
+  constructor(private vehicleService: VehicleService) {
   }
 
   ngOnInit() {
     this.registerSubject = new Subject();
+    this.getVehicles();
+  }
+
+  getVehicles() {
+    this.vehicleService.getAll().subscribe((res) => this.vehicles = res,
+      (err) => console.log(err));
   }
 
   onRegisterClick() {
