@@ -17,7 +17,7 @@
     <tr *ngFor="let vehicle of vehicles">
       <td>{{vehicle.plate}}</td>
       <td>{{vehicle.make}} {{vehicle.model}} {{vehicle.year}}</td>
-      <td>10 Days</td>
+      <td>{{vehicle.wofExpiry}}</td>
     </tr>
   </tbody>
 </table>
@@ -31,7 +31,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <app-register-vehicle-form [registerSubject]="registerSubject" (submitEvent)="onSubmitEvent($event)" (registrationEvent)="onVehicleRegistration($event)"></app-register-vehicle-form>
+        <app-register-vehicle-form [registerSubject]="registerSubject" (submitEvent)="onSubmitEvent($event)"></app-register-vehicle-form>
       </div>
       <div class="modal-footer">
         <div class="w-100">

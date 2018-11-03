@@ -15,7 +15,6 @@ export class RegisterVehicleFormComponent implements OnInit {
 
   @Input() registerSubject: Subject<void>;
   @Output() submitEvent = new EventEmitter<SubmitEvent>();
-  @Output() registrationEvent = new EventEmitter<any>();
   @ViewChild(NgForm) registerVehicleForm;
   public data: any = {};
   public disableForm = false;
@@ -36,7 +35,6 @@ export class RegisterVehicleFormComponent implements OnInit {
     this.onSubmitStart();
     this.vehicleService.register(this.data).subscribe((res) => {
       $('#registerVehicleModal .close').click();
-      this.registrationEvent.emit(this.data);
     }, (err) => {
       this.alertService.sendAlert({message: err.error, type: AlertType.ERROR});
     }).add(() => this.onSubmitEnd());

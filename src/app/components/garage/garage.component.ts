@@ -21,6 +21,8 @@ export class GarageComponent implements OnInit {
   ngOnInit() {
     this.registerSubject = new Subject();
     this.getVehicles();
+    this.vehicleService.getVehicleSubject().subscribe(vehicles => this.vehicles = vehicles,
+      err => console.log(err));
   }
 
   getVehicles() {
@@ -38,9 +40,5 @@ export class GarageComponent implements OnInit {
     } else {
       this.isSubmitting = false;
     }
-  }
-
-  onVehicleRegistration(vehicle: any) {
-    this.vehicles.push(vehicle);
   }
 }
