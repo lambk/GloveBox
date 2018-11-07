@@ -1,5 +1,4 @@
-.lite-input {
-  border: 0;
-  border-bottom: 1px solid #AAAAAA;
-  outline: none;
+.garage-container {
+  max-height: 100%;
+  overflow-y: auto;
 }

@@ -16,3 +16,9 @@
 .ajaxLoader {
   vertical-align: top;
 }
+
+.lite-input {
+  border: 0;
+  border-bottom: 1px solid #AAAAAA;
+  outline: none;
+}

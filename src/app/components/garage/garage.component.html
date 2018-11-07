@@ -1,26 +1,39 @@
-<h2>Garage</h2>
-<div class="mb-1 d-flex">
-  <input type="text" class="lite-input col-md-3 col-sm-6" value="" placeholder="Search">
-  <button type="button" class="btn btn-sm btn-success ml-auto" data-toggle="modal" data-target="#registerVehicleModal">
-    <i class="fa fa-plus"></i> Add Vehicle
-  </button>
+<div class="garage-container">
+  <h2>Garage</h2>
+  <div class="mb-1 d-flex flex-shrink-0">
+    <input type="text" class="lite-input col-md-3 col-sm-6" value="" placeholder="Search">
+    <button type="button" class="btn btn-sm btn-success ml-auto" data-toggle="modal" data-target="#registerVehicleModal">
+      <i class="fa fa-plus"></i> Add Vehicle
+    </button>
+  </div>
+  <table class="table">
+    <thead class="thead-light">
+      <tr>
+        <th>Plate</th>
+        <th>Type</th>
+        <th>Wof Due</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let vehicle of getVehiclesForPage(pageNumber)">
+        <td>{{vehicle.plate}}</td>
+        <td>{{vehicle.make}} {{vehicle.model}} {{vehicle.year}}</td>
+        <td>{{vehicle.wofExpiry}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <ul class="pagination">
+    <li class="page-item" [class.disabled]="pageNumber === 0">
+      <a class="page-link" (click)="setPageNumber(pageNumber - 1)">&#171;</a>
+    </li>
+    <li class="page-item" *ngFor="let num of getPageArray()" [class.active]="num === pageNumber">
+      <a class="page-link" (click)="setPageNumber(num)">{{num + 1}}</a>
+    </li>
+    <li class="page-item" [class.disabled]="isOnLastPage()">
+      <a class="page-link" (click)="setPageNumber(pageNumber + 1)">&#187;</a>
+    </li>
+  </ul>
 </div>
-<table class="table">
-  <thead class="thead-light">
-    <tr>
-      <th>Plate</th>
-      <th>Type</th>
-      <th>Wof Due</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let vehicle of vehicles">
-      <td>{{vehicle.plate}}</td>
-      <td>{{vehicle.make}} {{vehicle.model}} {{vehicle.year}}</td>
-      <td>{{vehicle.wofExpiry}}</td>
-    </tr>
-  </tbody>
-</table>
 <div id="registerVehicleModal" class="modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
     <div class="modal-content">

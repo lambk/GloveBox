@@ -4,6 +4,8 @@ import { Subject } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { Vehicle } from 'src/app/interfaces/vehicle.model';
 
+const vehiclesPerPage = 5;
+
 @Component({
   selector: 'app-garage',
   templateUrl: './garage.component.html',
@@ -11,9 +13,10 @@ import { Vehicle } from 'src/app/interfaces/vehicle.model';
 })
 export class GarageComponent implements OnInit {
 
-  public vehicles: Vehicle[];
+  public vehicles: Vehicle[] = [];
   public registerSubject: Subject<void>;
   public isSubmitting = false;
+  public pageNumber = 0;
 
   constructor(private vehicleService: VehicleService) {
   }
@@ -30,6 +33,11 @@ export class GarageComponent implements OnInit {
       (err) => console.log(err));
   }
 
+  getVehiclesForPage(pageNumber: number) {
+    return this.vehicles.sort((a, b) => a.plate < b.plate ? -1 : a.plate === b.plate ? 0 : 1)
+      .slice(pageNumber * vehiclesPerPage, (pageNumber + 1) * vehiclesPerPage);
+  }
+
   onRegisterClick() {
     this.registerSubject.next();
   }
@@ -40,5 +48,18 @@ export class GarageComponent implements OnInit {
     } else {
       this.isSubmitting = false;
     }
+  }
+
+  getPageArray() {
+    const numPages = Math.ceil(this.vehicles.length / vehiclesPerPage);
+    return Array.from({length: numPages}, (v, i) => i);
+  }
+
+  setPageNumber(num: number) {
+    this.pageNumber = num;
+  }
+
+  isOnLastPage() {
+    return this.pageNumber >= Math.ceil(this.vehicles.length / vehiclesPerPage) - 1;
   }
 }
