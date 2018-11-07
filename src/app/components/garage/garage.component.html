@@ -1,7 +1,7 @@
 <div class="garage-container">
   <h2>Garage</h2>
   <div class="mb-1 d-flex flex-shrink-0">
-    <input type="text" class="lite-input col-md-3 col-sm-6" value="" placeholder="Search">
+    <input type="text" class="lite-input col-md-3 col-sm-6" [(ngModel)]="searchInput" (input)="filterVehicles()" placeholder="Search">
     <div class="form-inline">
       <span>Show</span>
       <select class="form-control ml-2 mr-2" [(ngModel)]="vehiclesPerPage" (change)="onPageCapacityChange()">
@@ -9,7 +9,7 @@
         <option>10</option>
         <option>15</option>
       </select>
-      <span>of {{vehicles.length}}</span>
+      <span>of {{filteredVehicles.length}}</span>
     </div>
     <button type="button" class="btn btn-sm btn-success ml-auto" data-toggle="modal" data-target="#registerVehicleModal">
       <i class="fa fa-plus"></i> Add Vehicle
@@ -27,7 +27,7 @@
       <tr *ngIf="loadingVehicles">
         <td colspan="3" class="text-center">Loading vehicles <img src="assets/spinner-lg-black.gif" height="20"></td>
       </tr>
-      <tr *ngFor="let vehicle of getVehiclesForPage(pageNumber)">
+      <tr *ngFor="let vehicle of getVehiclesToDisplay()">
         <td>{{vehicle.plate}}</td>
         <td>{{vehicle.make}} {{vehicle.model}} {{vehicle.year}}</td>
         <td>{{vehicle.wofExpiry}}</td>

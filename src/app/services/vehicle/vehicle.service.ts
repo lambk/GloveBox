@@ -1,6 +1,6 @@
-import { shareReplay } from 'rxjs/operators';
+import { Vehicle } from 'src/app/interfaces/vehicle.model';
+import { shareReplay, map } from 'rxjs/operators';
 import { of, Subject, Observable } from 'rxjs';
-import { Vehicle } from './../../interfaces/vehicle.model';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { VehicleRegistrationDTO } from 'src/app/interfaces/vehicleRegistration.dto';
@@ -28,6 +28,7 @@ export class VehicleService {
       vehicle, {headers: headers}).pipe(shareReplay(1));
     ajax.subscribe((response) => {
       this.vehicles.push(response);
+      this.vehicles = this.sortVehicles(this.vehicles);
       this.pushVehiclesUpdate();
     });
     return ajax;
@@ -38,9 +39,15 @@ export class VehicleService {
       return of(this.vehicles);
     }
     const ajax = this.http.get<Vehicle[]>(`${environment.server_url}/vehicles/${localStorage.getItem('id')}`,
-      {headers: headers, responseType: 'json'});
+      {headers: headers, responseType: 'json'}).pipe(map(vehicles => {
+        return this.sortVehicles(vehicles);
+      }));
     ajax.subscribe(response => this.vehicles = response);
     return ajax;
+  }
+
+  private sortVehicles(vehicles: Vehicle[]) {
+    return vehicles.sort((a, b) => a.plate < b.plate ? -1 : a.plate === b.plate ? 0 : 1);
   }
 
   getVehicleSubject() {
