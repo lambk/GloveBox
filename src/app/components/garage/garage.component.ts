@@ -4,8 +4,6 @@ import { Subject } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { Vehicle } from 'src/app/interfaces/vehicle.model';
 
-const vehiclesPerPage = 5;
-
 @Component({
   selector: 'app-garage',
   templateUrl: './garage.component.html',
@@ -17,6 +15,7 @@ export class GarageComponent implements OnInit {
   public registerSubject: Subject<void>;
   public isSubmitting = false;
   public pageNumber = 0;
+  public vehiclesPerPage = 5;
 
   constructor(private vehicleService: VehicleService) {
   }
@@ -35,7 +34,7 @@ export class GarageComponent implements OnInit {
 
   getVehiclesForPage(pageNumber: number) {
     return this.vehicles.sort((a, b) => a.plate < b.plate ? -1 : a.plate === b.plate ? 0 : 1)
-      .slice(pageNumber * vehiclesPerPage, (pageNumber + 1) * vehiclesPerPage);
+      .slice(pageNumber * this.vehiclesPerPage, (pageNumber + 1) * this.vehiclesPerPage);
   }
 
   onRegisterClick() {
@@ -51,7 +50,7 @@ export class GarageComponent implements OnInit {
   }
 
   getPageArray() {
-    const numPages = Math.ceil(this.vehicles.length / vehiclesPerPage);
+    const numPages = Math.ceil(this.vehicles.length / this.vehiclesPerPage);
     return Array.from({length: numPages}, (v, i) => i);
   }
 
@@ -60,6 +59,6 @@ export class GarageComponent implements OnInit {
   }
 
   isOnLastPage() {
-    return this.pageNumber >= Math.ceil(this.vehicles.length / vehiclesPerPage) - 1;
+    return this.pageNumber >= Math.ceil(this.vehicles.length / this.vehiclesPerPage) - 1;
   }
 }
