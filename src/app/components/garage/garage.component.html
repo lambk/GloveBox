@@ -4,7 +4,7 @@
     <input type="text" class="lite-input col-md-3 col-sm-6" value="" placeholder="Search">
     <div class="form-inline">
       <span>Show</span>
-      <select class="form-control ml-2 mr-2" [(ngModel)]="vehiclesPerPage">
+      <select class="form-control ml-2 mr-2" [(ngModel)]="vehiclesPerPage" (change)="onPageCapacityChange()">
         <option>5</option>
         <option>10</option>
         <option>15</option>
@@ -38,7 +38,7 @@
     <li class="page-item" *ngFor="let num of getPageArray()" [class.active]="num === pageNumber">
       <a class="page-link" (click)="setPageNumber(num)">{{num + 1}}</a>
     </li>
-    <li class="page-item" [class.disabled]="isOnLastPage()">
+    <li class="page-item" [class.disabled]="pageNumber >= getLastPageNumber()">
       <a class="page-link" (click)="setPageNumber(pageNumber + 1)">&#187;</a>
     </li>
   </ul>

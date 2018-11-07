@@ -58,7 +58,14 @@ export class GarageComponent implements OnInit {
     this.pageNumber = num;
   }
 
-  isOnLastPage() {
-    return this.pageNumber >= Math.ceil(this.vehicles.length / this.vehiclesPerPage) - 1;
+  getLastPageNumber() {
+    return Math.ceil(this.vehicles.length / this.vehiclesPerPage) - 1;
+  }
+
+  onPageCapacityChange() {
+    const lastPage = this.getLastPageNumber();
+    if (this.pageNumber > lastPage) {
+      this.pageNumber = lastPage;
+    }
   }
 }
