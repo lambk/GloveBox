@@ -4,6 +4,8 @@ import { Subject } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { Vehicle } from 'src/app/interfaces/vehicle.model';
 
+const defaultPageSize = 5;
+
 @Component({
   selector: 'app-garage',
   templateUrl: './garage.component.html',
@@ -15,7 +17,8 @@ export class GarageComponent implements OnInit {
   public registerSubject: Subject<void>;
   public isSubmitting = false;
   public pageNumber = 0;
-  public vehiclesPerPage = 5;
+  public vehiclesPerPage = defaultPageSize;
+  public loadingVehicles = true;
 
   constructor(private vehicleService: VehicleService) {
   }
@@ -29,7 +32,7 @@ export class GarageComponent implements OnInit {
 
   getVehicles() {
     this.vehicleService.getAll().subscribe((res) => this.vehicles = res,
-      (err) => console.log(err));
+      (err) => console.log(err)).add(() => this.loadingVehicles = false);
   }
 
   getVehiclesForPage(pageNumber: number) {

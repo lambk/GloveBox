@@ -24,6 +24,9 @@
       </tr>
     </thead>
     <tbody>
+      <tr *ngIf="loadingVehicles">
+        <td colspan="3" class="text-center">Loading vehicles <img src="assets/spinner-lg-black.gif" height="20"></td>
+      </tr>
       <tr *ngFor="let vehicle of getVehiclesForPage(pageNumber)">
         <td>{{vehicle.plate}}</td>
         <td>{{vehicle.make}} {{vehicle.model}} {{vehicle.year}}</td>
