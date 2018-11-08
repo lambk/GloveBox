@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { shim } from 'promise.prototype.finally';
+import { MomentModule } from 'ngx-moment';
 
 import { AppComponent } from '../components/app.component';
 import { SideBarComponent } from '../components/side-bar/side-bar.component';
@@ -44,7 +45,8 @@ shim();
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    NgbModule
+    NgbModule,
+    MomentModule
   ],
   providers: [],
   bootstrap: [AppComponent]

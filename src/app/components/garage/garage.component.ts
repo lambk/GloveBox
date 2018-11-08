@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { Vehicle } from 'src/app/interfaces/vehicle.model';
 
 const defaultPageSize = 5;
+const wofWarningPointInDays = 30;
 
 @Component({
   selector: 'app-garage',
@@ -35,13 +36,13 @@ export class GarageComponent implements OnInit {
         this.filterVehicles();
       },
       err => console.log(err));
-  }
+    }
 
-  getVehicles() {
-    this.vehicleService.getAll().subscribe(
-      vehicles => {
-        this.vehicles = vehicles;
-        this.filterVehicles();
+    getVehicles() {
+      this.vehicleService.getAll().subscribe(
+        vehicles => {
+          this.vehicles = vehicles;
+          this.filterVehicles();
       },
       err => console.log(err)).add(() => this.loadingVehicles = false);
   }
@@ -99,5 +100,19 @@ export class GarageComponent implements OnInit {
     if (this.pageNumber > lastPage) {
       this.pageNumber = lastPage;
     }
+  }
+
+  getDaysUntilDate(dateStr: string) {
+    const today  = new Date();
+    const diff = new Date(dateStr).getTime() - today.getTime();
+    return Math.ceil(diff / (24 * 60 * 60 * 1000));
+  }
+
+  isWoFInFuture(dateStr: string) {
+    return this.getDaysUntilDate(dateStr) >= 0;
+  }
+
+  isWoFNearlyDue(dateStr: string) {
+    return this.getDaysUntilDate(dateStr) <= wofWarningPointInDays;
   }
 }

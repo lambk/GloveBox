@@ -30,7 +30,17 @@
       <tr *ngFor="let vehicle of getVehiclesToDisplay()">
         <td>{{vehicle.plate}}</td>
         <td>{{vehicle.make}} {{vehicle.model}} {{vehicle.year}}</td>
-        <td>{{vehicle.wofExpiry}}</td>
+        <td *ngIf="vehicle.wofExpiry === null else hasDate"></td>
+        <ng-template #hasDate>
+            <ng-template [ngIf]="isWoFInFuture(vehicle.wofExpiry)" [ngIfElse]="wofOverdue">
+              <td [class.wof-warning]="isWoFNearlyDue(vehicle.wofExpiry)">In {{getDaysUntilDate(vehicle.wofExpiry)}} days ({{vehicle.wofExpiry}})</td>
+            </ng-template>
+            <ng-template #wofOverdue>
+              <td class="wof-overdue">
+                <i class="fa fa-exclamation-circle"></i>
+                {{-1 * getDaysUntilDate(vehicle.wofExpiry)}} days ago ({{vehicle.wofExpiry}})</td>
+            </ng-template>
+        </ng-template>
       </tr>
     </tbody>
   </table>
