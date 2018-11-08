@@ -1,26 +1,61 @@
-<h2>Garage</h2>
-<div class="mb-1 d-flex">
-  <input type="text" class="lite-input col-md-3 col-sm-6" value="" placeholder="Search">
-  <button type="button" class="btn btn-sm btn-success ml-auto" data-toggle="modal" data-target="#registerVehicleModal">
-    <i class="fa fa-plus"></i> Add Vehicle
-  </button>
+<div class="garage-container">
+  <h2>Garage</h2>
+  <div class="mb-1 d-flex">
+    <input type="text" class="lite-input col-md-3 col-sm-6" [(ngModel)]="searchInput" (input)="filterVehicles()" placeholder="Search">
+    <div class="form-inline ml-2 align-items-end">
+      <span>Show</span>
+      <select class="form-control ml-2 mr-2" style="height: 2rem" [(ngModel)]="vehiclesPerPage" (change)="onPageCapacityChange()">
+        <option>5</option>
+        <option>10</option>
+        <option>15</option>
+      </select>
+      <span>of {{filteredVehicles.length}}</span>
+    </div>
+    <button type="button" class="btn btn-sm btn-success ml-auto" data-toggle="modal" data-target="#registerVehicleModal">
+      <i class="fa fa-plus"></i> Add Vehicle
+    </button>
+  </div>
+  <table class="table table-hover table-pointer">
+    <thead class="thead-light">
+      <tr>
+        <th class="w-25">Plate</th>
+        <th class="w-50">Type</th>
+        <th class="w-25">Wof Due</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngIf="loadingVehicles">
+        <td colspan="3" class="text-center">Loading vehicles <img src="assets/spinner-lg-black.gif" height="20"></td>
+      </tr>
+      <tr *ngFor="let vehicle of getVehiclesToDisplay()">
+        <td>{{vehicle.plate}}</td>
+        <td>{{vehicle.make}} {{vehicle.model}} {{vehicle.year}}</td>
+        <td *ngIf="vehicle.wofExpiry === null else hasDate"></td>
+        <ng-template #hasDate>
+            <ng-template [ngIf]="isWoFInFuture(vehicle.wofExpiry)" [ngIfElse]="wofOverdue">
+              <td [class.wof-warning]="isWoFNearlyDue(vehicle.wofExpiry)">In {{getDaysUntilDate(vehicle.wofExpiry)}} days ({{vehicle.wofExpiry}})</td>
+            </ng-template>
+            <ng-template #wofOverdue>
+              <td class="wof-overdue">
+                <i class="fa fa-exclamation-circle"></i>
+                {{-1 * getDaysUntilDate(vehicle.wofExpiry)}} days ago ({{vehicle.wofExpiry}})</td>
+            </ng-template>
+        </ng-template>
+      </tr>
+    </tbody>
+  </table>
+  <ul class="pagination">
+    <li class="page-item" [class.disabled]="pageNumber === 0">
+      <a class="page-link" (click)="setPageNumber(pageNumber - 1)">&#171;</a>
+    </li>
+    <li class="page-item" *ngFor="let num of getPageArray()" [class.active]="num === pageNumber">
+      <a class="page-link" (click)="setPageNumber(num)">{{num + 1}}</a>
+    </li>
+    <li class="page-item" [class.disabled]="pageNumber >= getLastPageNumber()">
+      <a class="page-link" (click)="setPageNumber(pageNumber + 1)">&#187;</a>
+    </li>
+  </ul>
 </div>
-<table class="table">
-  <thead class="thead-light">
-    <tr>
-      <th>Plate</th>
-      <th>Type</th>
-      <th>Wof Due</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let vehicle of vehicles">
-      <td>{{vehicle.plate}}</td>
-      <td>{{vehicle.make}} {{vehicle.model}} {{vehicle.year}}</td>
-      <td>10 Days</td>
-    </tr>
-  </tbody>
-</table>
 <div id="registerVehicleModal" class="modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -31,7 +66,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <app-register-vehicle-form [registerSubject]="registerSubject" (submitEvent)="onSubmitEvent($event)" (registrationEvent)="onVehicleRegistration($event)"></app-register-vehicle-form>
+        <app-register-vehicle-form [registerSubject]="registerSubject" (submitEvent)="onSubmitEvent($event)"></app-register-vehicle-form>
       </div>
       <div class="modal-footer">
         <div class="w-100">
