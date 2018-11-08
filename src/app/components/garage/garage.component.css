@@ -3,6 +3,10 @@
   overflow-y: auto;
 }
 
+.table-pointer tbody tr {
+  cursor: pointer;
+}
+
 .wof-warning {
   color: orange;
 }
