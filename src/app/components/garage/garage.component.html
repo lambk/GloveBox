@@ -1,8 +1,8 @@
 <div class="garage-container">
   <h2>Garage</h2>
   <div class="mb-1 d-flex">
-    <input type="text" class="lite-input col-md-3 col-sm-6" [(ngModel)]="searchInput" (input)="filterVehicles()" placeholder="Search">
-    <div class="form-inline ml-2 align-items-end">
+    <input type="text" class="flex-shrink-1 lite-input col-md-3 col-sm-6" [(ngModel)]="searchInput" (input)="filterVehicles()" placeholder="Search">
+    <div class="flex-shrink-0 form-inline ml-2 align-items-end">
       <span>Show</span>
       <select class="form-control ml-2 mr-2" style="height: 2rem" [(ngModel)]="vehiclesPerPage" (change)="onPageCapacityChange()">
         <option>5</option>
@@ -11,7 +11,7 @@
       </select>
       <span>of {{filteredVehicles.length}}</span>
     </div>
-    <button type="button" class="btn btn-sm btn-success ml-auto" data-toggle="modal" data-target="#registerVehicleModal">
+    <button type="button" class="flex-shrink-0 btn btn-sm btn-success ml-auto" data-toggle="modal" data-target="#registerVehicleModal">
       <i class="fa fa-plus"></i> Add Vehicle
     </button>
   </div>
