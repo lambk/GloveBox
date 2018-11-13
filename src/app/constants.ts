@@ -9,3 +9,7 @@ export enum SubmitEvent {
   START = 'START',
   END = 'END'
 }
+
+export enum AlertRestriction {
+  REGISTER_VEHICLE_FORM = 'RegisterVehicleForm'
+}

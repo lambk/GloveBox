@@ -1,5 +1,5 @@
 <form (keydown.enter)="submit()" #form="ngForm" novalidate>
-  <app-alert></app-alert>
+  <app-alert [classification]="'RegisterVehicleForm'"></app-alert>
   <h5>General</h5>
   <fieldset [disabled]="disableForm">
     <div class="row">

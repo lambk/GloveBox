@@ -1,3 +1,4 @@
+import { AlertRestriction } from './../../constants';
 import { Subject } from 'rxjs';
 import { AlertType } from 'src/app/constants';
 import { Injectable } from '@angular/core';
@@ -5,6 +6,7 @@ import { Injectable } from '@angular/core';
 export interface Alert {
   message: string;
   type: AlertType;
+  restrict?: AlertRestriction;
 }
 
 @Injectable({

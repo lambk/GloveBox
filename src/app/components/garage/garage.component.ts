@@ -36,15 +36,15 @@ export class GarageComponent implements OnInit {
         this.filterVehicles();
       },
       err => console.log(err));
-    }
+  }
 
-    getVehicles() {
-      this.vehicleService.getAll().subscribe(
-        vehicles => {
-          this.vehicles = vehicles;
-          this.filterVehicles();
-      },
-      err => console.log(err)).add(() => this.loadingVehicles = false);
+  getVehicles() {
+    this.vehicleService.getAll().subscribe(
+      vehicles => {
+        this.vehicles = vehicles;
+        this.filterVehicles();
+    },
+    err => console.log(err)).add(() => this.loadingVehicles = false);
   }
 
   filterVehicles() {

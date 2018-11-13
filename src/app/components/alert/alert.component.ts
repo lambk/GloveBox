@@ -1,6 +1,6 @@
 import { AlertService } from './../../services/alert/alert.service';
 import { AlertType } from 'src/app/constants';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
@@ -30,14 +30,17 @@ export class AlertComponent implements OnInit {
   show = false;
   message = undefined;
   type: AlertType = undefined;
+  @Input() classification: string;
 
   constructor(private alertService: AlertService) { }
 
   ngOnInit() {
     this.alertService.getAlertObservable().subscribe((alert) => {
-      this.show = true;
-      this.message = alert.message;
-      this.type = alert.type;
+      if (!(alert.restrict && alert.restrict !== this.classification)) {
+        this.show = true;
+        this.message = alert.message;
+        this.type = alert.type;
+      }
     });
   }
 
