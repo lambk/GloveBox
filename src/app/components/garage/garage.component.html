@@ -1,11 +1,11 @@
 <div class="garage-container">
   <h2>Garage</h2>
   <app-alert></app-alert>
-  <div class="mb-1 d-flex">
+  <div class="mb-1 d-flex align-items-end">
     <input type="text" class="flex-shrink-1 lite-input col-md-3 col-sm-6" [(ngModel)]="searchInput" (input)="filterVehicles()" placeholder="Search">
     <div class="flex-shrink-0 form-inline ml-2 align-items-end">
       <span>Show</span>
-      <select class="form-control ml-2 mr-2" style="height: 2rem" [(ngModel)]="vehiclesPerPage" (change)="onPageCapacityChange()">
+      <select class="form-control ml-2 mr-2" style="height: 2rem; width: auto" [(ngModel)]="vehiclesPerPage" (change)="onPageCapacityChange()">
         <option>5</option>
         <option>10</option>
         <option>15</option>
