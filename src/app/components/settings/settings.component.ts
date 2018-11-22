@@ -1,3 +1,4 @@
+import { ThemeService } from './../../services/theme/theme.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,10 +7,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit {
+  public color: string;
 
-  constructor() { }
+  constructor(private themeService: ThemeService) { }
 
   ngOnInit() {
+  }
+
+  themeTest() {
+    this.themeService.setTheme(this.color);
   }
 
 }

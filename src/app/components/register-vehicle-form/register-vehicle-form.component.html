@@ -7,7 +7,7 @@
         <div class="input-group-prepend">
           <span class="input-group-text required">Plate</span>
         </div>
-        <input type="text" class="form-control" name="plate" #plate="ngModel" [(ngModel)]="data.plate"
+        <input type="text" class="form-control uppercase" name="plate" #plate="ngModel" [(ngModel)]="data.plate"
         [class.invalid]="form.submitted && plate.pristine && plate.invalid" required>
       </div>
     </div>

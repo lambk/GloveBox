@@ -1,0 +1,31 @@
+.input-button {
+    border-radius: 100%;
+    width: 1.5em;
+    height: 1.5em;
+    cursor: pointer;
+}
+
+.input-button:not(:last-child) {
+    margin-right: 5px;
+}
+
+.input-button > i {
+    color: white;
+}
+
+.input-accept {
+    background: rgba(0, 128, 0, 0.8);
+}
+
+.input-accept:hover {
+    background: rgba(64, 160, 64, 0.8);
+}
+
+.input-decline {
+    background: rgba(255, 0, 0, 0.8);
+}
+
+.input-decline:hover {
+    background: rgba(255, 64, 64, 0.8);
+
+}

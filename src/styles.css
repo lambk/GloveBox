@@ -3,8 +3,8 @@
   flex-direction: column;
 }
 
-.input-group-text {
-  width: 100px;
+.input-group-prepend > .input-group-text {
+  min-width: 100px;
 }
 
 .invalid {
@@ -26,4 +26,12 @@
 
 .lite-input:focus {
   padding-left: 20px;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.uppercase::placeholder {
+  text-transform: none;
 }

@@ -1,9 +1,8 @@
+import { ThemeService } from './../../services/theme/theme.service';
 import { LoadingService } from './../../services/loading/loading.service';
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
-
-const defaultThemeColor = '212F3D';
 
 @Component({
   selector: 'app-side-bar',
@@ -14,7 +13,8 @@ export class SideBarComponent implements OnInit {
   public href = '';
   public themeColor;
 
-  constructor(private router: Router, private authService: AuthService, private loadingService: LoadingService) { }
+  constructor(private router: Router, private authService: AuthService, private loadingService: LoadingService,
+    private themeService: ThemeService) { }
 
   ngOnInit() {
     this.router.events.subscribe((e: any) => {
@@ -22,11 +22,7 @@ export class SideBarComponent implements OnInit {
         this.href = e.url;
       }
     });
-    if (/^[0-9A-F]{6}$/.test(localStorage.getItem('theme'))) {
-      this.themeColor = localStorage.getItem('theme');
-    } else {
-      this.themeColor = defaultThemeColor;
-    }
+    this.themeService.getThemeSubject().subscribe((color: string) => this.themeColor = color);
   }
 
   logout(): void {
