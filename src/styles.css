@@ -21,4 +21,9 @@
   border: 0;
   border-bottom: 1px solid #AAAAAA;
   outline: none;
+  transition: 0.1s linear padding;
+}
+
+.lite-input:focus {
+  padding-left: 20px;
 }
