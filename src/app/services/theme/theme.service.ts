@@ -12,7 +12,7 @@ export class ThemeService {
   private themeSubject: ReplaySubject<string> = new ReplaySubject<string>();
 
   constructor() {
-    if (/^[0-9A-Fa-f]{6}$/.test(localStorage.getItem('theme'))) {
+    if (/^(?:[A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(localStorage.getItem('theme'))) {
       this.themeColor = localStorage.getItem('theme');
     } else {
       this.themeColor = defaultThemeColor;
@@ -26,11 +26,15 @@ export class ThemeService {
     this.sendUpdate();
   }
 
+  resetTheme() {
+    this.setTheme(defaultThemeColor);
+  }
+
   getThemeSubject() {
     return this.themeSubject;
   }
 
   private sendUpdate() {
-    this.themeSubject.next(this.themeColor)
+    this.themeSubject.next(this.themeColor);
   }
 }

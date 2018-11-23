@@ -1,6 +1,14 @@
+.theme-preview {
+    width: 20px;
+    height: 1.2em;
+    border: 1px solid black;
+}
+
 .input-button {
+    border: none;
     border-radius: 100%;
-    width: 1.5em;
+    padding: 0;
+    min-width: 1.5em;
     height: 1.5em;
     cursor: pointer;
 }
@@ -13,6 +21,10 @@
     color: white;
 }
 
+.input-button:disabled {
+    background: grey !important;
+}
+
 .input-accept {
     background: rgba(0, 128, 0, 0.8);
 }
@@ -21,11 +33,10 @@
     background: rgba(64, 160, 64, 0.8);
 }
 
-.input-decline {
-    background: rgba(255, 0, 0, 0.8);
+.input-reset {
+    background: rgba(255, 174, 0, 0.8);
 }
 
-.input-decline:hover {
-    background: rgba(255, 64, 64, 0.8);
-
+.input-reset:hover {
+    background: rgba(255, 192, 0, 0.8);
 }

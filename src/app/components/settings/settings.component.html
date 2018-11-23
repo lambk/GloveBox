@@ -4,11 +4,14 @@
     <div class="input-group-prepend">
       <span class="input-group-text">Theme</span>
     </div>
-    <input type="text" class="form-control uppercase" [(ngModel)]="color" placeholder="eg #FF0000" required pattern="\d{4}">
+    <input type="text" class="form-control uppercase" [(ngModel)]="color" #themeInput="ngModel" placeholder="eg #FF0000" required pattern="(?:[A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})">
     <div class="input-group-append">
       <span class="input-group-text">
-          <a class="input-button input-accept" title="Save changes" (click)="themeTest()"><i class="fa fa-check"></i></a>
-          <a class="input-button input-decline" title="Discard changes"><i class="fa fa-times"></i></a>
+        <span class="theme-preview" [style.background]="'#' + color"></span>
+      </span>
+      <span class="input-group-text">
+        <button class="input-button input-accept" title="Save changes" (click)="setTheme()" [disabled]="themeInput.pristine || themeInput.invalid"><i class="fa fa-check"></i></button>
+        <button class="input-button input-reset" title="Discard changes" (click)="discardChanges()" [disabled]="themeInput.pristine"><i class="fa fa-arrow-left"></i></button>
       </span>
     </div>
   </div>
