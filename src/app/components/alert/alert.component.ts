@@ -6,7 +6,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 @Component({
   selector: 'app-alert',
   templateUrl: './alert.component.html',
-  styleUrls: ['./alert.component.css'],
+  styleUrls: ['./alert.component.scss'],
   animations: [
     trigger('alertFade', [
       transition(':enter', [

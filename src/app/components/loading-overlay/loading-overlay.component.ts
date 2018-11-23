@@ -5,7 +5,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 @Component({
   selector: 'app-loading-overlay',
   templateUrl: './loading-overlay.component.html',
-  styleUrls: ['./loading-overlay.component.css'],
+  styleUrls: ['./loading-overlay.component.scss'],
   animations: [
     trigger('loadingFade', [
       transition(':leave', [

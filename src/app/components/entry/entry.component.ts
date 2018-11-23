@@ -5,7 +5,7 @@ import { SubmitEvent } from 'src/app/constants';
 @Component({
   selector: 'app-entry',
   templateUrl: './entry.component.html',
-  styleUrls: ['./entry.component.css']
+  styleUrls: ['./entry.component.scss']
 })
 export class EntryComponent {
 

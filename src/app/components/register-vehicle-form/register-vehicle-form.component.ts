@@ -9,7 +9,7 @@ import { AlertType, SubmitEvent, AlertRestriction } from 'src/app/constants';
 @Component({
   selector: 'app-register-vehicle-form',
   templateUrl: './register-vehicle-form.component.html',
-  styleUrls: ['./register-vehicle-form.component.css']
+  styleUrls: ['./register-vehicle-form.component.scss']
 })
 export class RegisterVehicleFormComponent implements OnInit {
 
