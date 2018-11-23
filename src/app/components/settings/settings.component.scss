@@ -11,32 +11,32 @@
     min-width: 1.5em;
     height: 1.5em;
     cursor: pointer;
-}
 
-.input-button:not(:last-child) {
-    margin-right: 5px;
-}
+    > i {
+        color: white;
+    }
 
-.input-button > i {
-    color: white;
-}
+    &:disabled {
+        background: grey !important;
+    }
 
-.input-button:disabled {
-    background: grey !important;
+    &:not(:last-child) {
+        margin-right: 5px;
+    }
 }
 
 .input-accept {
     background: rgba(0, 128, 0, 0.8);
-}
 
-.input-accept:hover {
-    background: rgba(64, 160, 64, 0.8);
+    &:hover {
+        background: rgba(64, 160, 64, 0.8);
+    }
 }
 
 .input-reset {
     background: rgba(255, 174, 0, 0.8);
-}
 
-.input-reset:hover {
-    background: rgba(255, 192, 0, 0.8);
+    &:hover {
+        background: rgba(255, 192, 0, 0.8);
+    }
 }
