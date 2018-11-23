@@ -1,4 +1,4 @@
-<div class="vertical-flex side-bar" [style.background]="'#' + themeColor">
+<div class="vertical-flex side-bar" [style.background]="'#' + themeColor" [style.color]="getIconColor()">
   <div routerLink="/" class="side-bar-icon-container" [class.active]="href === '/'">
     <i class="side-bar-icon fa fa-car"></i>
     <span class="side-bar-label">Overview</span>

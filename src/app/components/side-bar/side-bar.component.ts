@@ -4,6 +4,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
 
+const iconColorToBlackThreshold = 'C';
+const requiredRGBExceedingThreshold = 2;
+
 @Component({
   selector: 'app-side-bar',
   templateUrl: './side-bar.component.html',
@@ -11,7 +14,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 })
 export class SideBarComponent implements OnInit {
   public href = '';
-  public themeColor;
+  public themeColor: string;
 
   constructor(private router: Router, private authService: AuthService, private loadingService: LoadingService,
     private themeService: ThemeService) { }
@@ -33,5 +36,18 @@ export class SideBarComponent implements OnInit {
         this.router.navigate(['/login']);
         this.loadingService.setLoadingState(false);
       });
+  }
+
+  getIconColor() {
+    if (this.themeColor === undefined) {
+      return '#FFF';
+    }
+    let aboveThresholdCount = 0;
+    for (let i = 0; i < this.themeColor.length; i += this.themeColor.length === 3 ? 1 : 2) {
+      if (this.themeColor.charAt(i).toUpperCase() >= iconColorToBlackThreshold) {
+        aboveThresholdCount++;
+      }
+    }
+    return aboveThresholdCount >= requiredRGBExceedingThreshold ? '#000' : '#FFF';
   }
 }
