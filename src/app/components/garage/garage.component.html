@@ -6,9 +6,7 @@
     <div class="flex-shrink-0 form-inline ml-2 align-items-end">
       <span>Show</span>
       <select class="form-control ml-2 mr-2" style="height: 2rem; width: auto" [(ngModel)]="vehiclesPerPage" (change)="onPageCapacityChange()">
-        <option>5</option>
-        <option>10</option>
-        <option>15</option>
+        <option *ngFor="let option of pageCapacities">{{option}}</option>
       </select>
       <span>of {{filteredVehicles.length}}</span>
     </div>
@@ -52,7 +50,7 @@
     <li class="page-item" *ngFor="let num of getPageArray()" [class.active]="num === pageNumber">
       <a class="page-link" (click)="setPageNumber(num)">{{num + 1}}</a>
     </li>
-    <li class="page-item" [class.disabled]="pageNumber >= getLastPageNumber()">
+    <li class="page-item">
       <a class="page-link" (click)="setPageNumber(pageNumber + 1)">&#187;</a>
     </li>
   </ul>

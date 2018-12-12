@@ -3,9 +3,11 @@ import { SubmitEvent } from './../../constants';
 import { Subject } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { Vehicle } from 'src/app/interfaces/vehicle.model';
+import { computed, observable } from 'mobx-angular';
 
-const defaultPageSize = 5;
-const wofWarningPointInDays = 30;
+const DEFAULT_PAGE_SIZE = 5;
+const WOF_WARNING_THRESHOLD_DAYS = 30;
+const PAGE_CAPACITY_OPTIONS = [5, 10, 15];
 
 @Component({
   selector: 'app-garage',
@@ -15,13 +17,14 @@ const wofWarningPointInDays = 30;
 export class GarageComponent implements OnInit {
 
   public vehicles: Vehicle[] = [];
-  public filteredVehicles: Vehicle[] = [];
+  @observable public filteredVehicles: Vehicle[] = [];
   public registerSubject: Subject<void>;
 
   public isSubmitting = false;
   public searchInput = '';
   public pageNumber = 0;
-  public vehiclesPerPage = defaultPageSize;
+  @observable public vehiclesPerPage = DEFAULT_PAGE_SIZE;
+  public pageCapacities = PAGE_CAPACITY_OPTIONS;
   public loadingVehicles = true;
 
   constructor(private vehicleService: VehicleService) {
@@ -77,10 +80,10 @@ export class GarageComponent implements OnInit {
   }
 
   getPageArray() {
-    return Array.from({length: this.getLastPageNumber() + 1}, (v, i) => i);
+    return Array.from({length: this.getLastPageNumber + 1}, (v, i) => i);
   }
 
-  getLastPageNumber() {
+  @computed get getLastPageNumber() {
     if (this.filteredVehicles.length === 0) {
       return 0;
     }
@@ -93,10 +96,11 @@ export class GarageComponent implements OnInit {
 
   onPageCapacityChange() {
     this.checkPageOutOfBounds();
+    localStorage.setItem('pageCapacity', this.vehiclesPerPage.toString());
   }
 
   checkPageOutOfBounds() {
-    const lastPage = this.getLastPageNumber();
+    const lastPage = this.getLastPageNumber;
     if (this.pageNumber > lastPage) {
       this.pageNumber = lastPage;
     }
@@ -113,6 +117,6 @@ export class GarageComponent implements OnInit {
   }
 
   isWoFNearlyDue(dateStr: string) {
-    return this.getDaysUntilDate(dateStr) <= wofWarningPointInDays;
+    return this.getDaysUntilDate(dateStr) <= WOF_WARNING_THRESHOLD_DAYS;
   }
 }
