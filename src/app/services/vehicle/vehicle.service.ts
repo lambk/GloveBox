@@ -1,5 +1,5 @@
 import { Vehicle } from 'src/app/interfaces/vehicle.model';
-import { shareReplay, map } from 'rxjs/operators';
+import { shareReplay, map, tap } from 'rxjs/operators';
 import { of, Subject, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -16,45 +16,33 @@ const headers = new HttpHeaders({
 })
 export class VehicleService {
 
-  private vehicles: Vehicle[] = [];
-  private vehicleSubject: Subject<Vehicle[]>;
+  private vehicles: Vehicle[];
 
   constructor(private http: HttpClient) {
-    this.vehicleSubject = new Subject();
   }
 
   register(vehicle: VehicleRegistrationDTO) {
-    const ajax = this.http.post<Vehicle>(`${environment.server_url}/vehicles/${localStorage.getItem('id')}`,
-      vehicle, {headers: headers}).pipe(shareReplay(1));
-    ajax.subscribe((response) => {
-      this.vehicles.push(response);
-      this.vehicles = this.sortVehicles(this.vehicles);
-      this.pushVehiclesUpdate();
-    });
-    return ajax;
+    return this.http.post<Vehicle>(`${environment.server_url}/vehicles/${localStorage.getItem('id')}`,
+      vehicle, {headers: headers}).pipe(
+        tap((vehicleResult) => {
+          this.vehicles.push(vehicleResult);
+          this.vehicles = this.sortVehicles(this.vehicles);
+        })
+      );
   }
 
   getAll() {
-    if (this.vehicles.length > 0) {
+    if (this.vehicles) {
       return of(this.vehicles);
     }
-    const ajax = this.http.get<Vehicle[]>(`${environment.server_url}/vehicles/${localStorage.getItem('id')}`,
-      {headers: headers, responseType: 'json'}).pipe(map(vehicles => {
-        return this.sortVehicles(vehicles);
-      }));
-    ajax.subscribe(response => this.vehicles = response);
-    return ajax;
+    return this.http.get<Vehicle[]>(`${environment.server_url}/vehicles/${localStorage.getItem('id')}`,
+      {headers: headers, responseType: 'json'}).pipe(
+        map(vehicles => this.sortVehicles(vehicles)),
+        tap(sortedVehicles => this.vehicles = sortedVehicles)
+      );
   }
 
   private sortVehicles(vehicles: Vehicle[]) {
     return vehicles.sort((a, b) => a.plate < b.plate ? -1 : a.plate === b.plate ? 0 : 1);
-  }
-
-  getVehicleSubject() {
-    return this.vehicleSubject;
-  }
-
-  private pushVehiclesUpdate() {
-    this.vehicleSubject.next(this.vehicles);
   }
 }

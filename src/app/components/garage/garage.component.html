@@ -2,13 +2,13 @@
   <h2>Garage</h2>
   <app-alert></app-alert>
   <div class="mb-1 d-flex align-items-end">
-    <input type="text" class="flex-shrink-1 lite-input col-md-3 col-sm-6" [(ngModel)]="searchInput" (input)="filterVehicles()" placeholder="Search">
+    <input type="text" class="flex-shrink-1 lite-input col-md-3 col-sm-6" [(ngModel)]="searchInput" (input)="onSearchInput()" placeholder="Search">
     <div class="flex-shrink-0 form-inline ml-2 align-items-end">
       <span>Show</span>
       <select class="form-control ml-2 mr-2" style="height: 2rem; width: auto" [(ngModel)]="vehiclesPerPage" (change)="onPageCapacityChange()">
         <option *ngFor="let option of pageCapacities">{{option}}</option>
       </select>
-      <span>of {{filteredVehicles.length}}</span>
+      <span>of {{totalLength}}</span>
     </div>
     <button type="button" class="flex-shrink-0 btn btn-sm btn-success ml-auto" data-toggle="modal" data-target="#registerVehicleModal">
       <i class="fa fa-plus"></i> Add Vehicle
@@ -26,7 +26,7 @@
       <tr *ngIf="loadingVehicles">
         <td colspan="3" class="text-center">Loading vehicles <img src="assets/spinner-lg-black.gif" height="20"></td>
       </tr>
-      <tr *ngFor="let vehicle of getVehiclesToDisplay()">
+      <tr *ngFor="let vehicle of vehicleStream | async">
         <td>{{vehicle.plate}}</td>
         <td>{{vehicle.make}} {{vehicle.model}} {{vehicle.year}}</td>
         <td *ngIf="vehicle.wofExpiry === null else hasDate"></td>
@@ -50,7 +50,7 @@
     <li class="page-item" *ngFor="let num of getPageArray()" [class.active]="num === pageNumber">
       <a class="page-link" (click)="setPageNumber(num)">{{num + 1}}</a>
     </li>
-    <li class="page-item">
+    <li class="page-item" [class.disabled]="pageNumber >= getLastPageNumber()">
       <a class="page-link" (click)="setPageNumber(pageNumber + 1)">&#187;</a>
     </li>
   </ul>

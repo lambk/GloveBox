@@ -1,9 +1,9 @@
 import { VehicleService } from './../../services/vehicle/vehicle.service';
 import { SubmitEvent } from './../../constants';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { Vehicle } from 'src/app/interfaces/vehicle.model';
-import { computed, observable } from 'mobx-angular';
+import { map } from 'rxjs/operators';
 
 const DEFAULT_PAGE_SIZE = 5;
 const WOF_WARNING_THRESHOLD_DAYS = 30;
@@ -16,14 +16,14 @@ const PAGE_CAPACITY_OPTIONS = [5, 10, 15];
 })
 export class GarageComponent implements OnInit {
 
-  public vehicles: Vehicle[] = [];
-  @observable public filteredVehicles: Vehicle[] = [];
+  public vehicleStream: Observable<Vehicle[]>;
+  public totalLength = 0;
   public registerSubject: Subject<void>;
 
   public isSubmitting = false;
   public searchInput = '';
   public pageNumber = 0;
-  @observable public vehiclesPerPage = DEFAULT_PAGE_SIZE;
+  public vehiclesPerPage = DEFAULT_PAGE_SIZE;
   public pageCapacities = PAGE_CAPACITY_OPTIONS;
   public loadingVehicles = true;
 
@@ -31,40 +31,25 @@ export class GarageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.registerSubject = new Subject();
-    this.getVehicles();
-    this.vehicleService.getVehicleSubject().subscribe(
-      vehicles => {
-        this.vehicles = vehicles;
-        this.filterVehicles();
-      },
-      err => console.log(err));
-  }
-
-  getVehicles() {
-    this.vehicleService.getAll().subscribe(
-      vehicles => {
-        this.vehicles = vehicles;
-        this.filterVehicles();
-    },
-    err => console.log(err)).add(() => this.loadingVehicles = false);
-  }
-
-  filterVehicles() {
-    const searchTerm = this.searchInput;
-    this.filteredVehicles = this.vehicles.filter((vehicle) => {
-      if (searchTerm === '') {
-        return true;
-      }
-      const vehicleDesc = vehicle.make + ' ' + vehicle.model;
-      return vehicle.plate.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1
-       || vehicleDesc.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1;
+    this.updateVehicleReference();
+    this.vehicleService.getAll().subscribe((vehicles) => {
+      this.loadingVehicles = false;
+      this.totalLength = vehicles.length;
     });
-    this.checkPageOutOfBounds();
+    this.registerSubject = new Subject();
   }
 
-  getVehiclesToDisplay() {
-    return this.filteredVehicles.slice(this.pageNumber * this.vehiclesPerPage, (this.pageNumber + 1) * this.vehiclesPerPage);
+  private updateVehicleReference() {
+    const regex = new RegExp(this.searchInput, 'i');
+    this.vehicleStream = this.vehicleService.getAll().pipe(
+      map(vehicles => vehicles.filter(vehicle => {
+        if (!this.searchInput) {
+          return true;
+        }
+        const desc = `${vehicle.make} ${vehicle.model}`;
+        return vehicle.plate.match(regex) || desc.match(regex);
+      })),
+      map(vehicles => vehicles.slice(this.pageNumber * this.vehiclesPerPage, (this.pageNumber + 1) * this.vehiclesPerPage)));
   }
 
   onRegisterClick() {
@@ -79,28 +64,34 @@ export class GarageComponent implements OnInit {
     }
   }
 
-  getPageArray() {
-    return Array.from({length: this.getLastPageNumber + 1}, (v, i) => i);
+  onSearchInput() {
+    this.updateVehicleReference();
   }
 
-  @computed get getLastPageNumber() {
-    if (this.filteredVehicles.length === 0) {
+  getPageArray() {
+    return Array.from({length: this.getLastPageNumber() + 1}, (v, i) => i);
+  }
+
+  getLastPageNumber() {
+    if (!this.totalLength) {
       return 0;
     }
-    return Math.ceil(this.filteredVehicles.length / this.vehiclesPerPage) - 1;
+    return Math.ceil(this.totalLength / this.vehiclesPerPage) - 1;
   }
 
   setPageNumber(num: number) {
     this.pageNumber = num;
+    this.updateVehicleReference();
   }
 
   onPageCapacityChange() {
     this.checkPageOutOfBounds();
     localStorage.setItem('pageCapacity', this.vehiclesPerPage.toString());
+    this.updateVehicleReference();
   }
 
   checkPageOutOfBounds() {
-    const lastPage = this.getLastPageNumber;
+    const lastPage = this.getLastPageNumber();
     if (this.pageNumber > lastPage) {
       this.pageNumber = lastPage;
     }
