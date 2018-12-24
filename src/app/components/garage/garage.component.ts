@@ -3,7 +3,7 @@ import { SubmitEvent } from './../../constants';
 import { Subject, Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { Vehicle } from 'src/app/interfaces/vehicle.model';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 const DEFAULT_PAGE_SIZE = 5;
 const WOF_WARNING_THRESHOLD_DAYS = 30;
@@ -32,9 +32,8 @@ export class GarageComponent implements OnInit {
 
   ngOnInit() {
     this.updateVehicleReference();
-    this.vehicleService.getAll().subscribe((vehicles) => {
+    this.vehicleStream.toPromise().then(() => {
       this.loadingVehicles = false;
-      this.totalLength = vehicles.length;
     });
     this.registerSubject = new Subject();
   }
@@ -49,6 +48,7 @@ export class GarageComponent implements OnInit {
         const desc = `${vehicle.make} ${vehicle.model}`;
         return vehicle.plate.match(regex) || desc.match(regex);
       })),
+      tap(vehicles => this.totalLength = vehicles.length),
       map(vehicles => vehicles.slice(this.pageNumber * this.vehiclesPerPage, (this.pageNumber + 1) * this.vehiclesPerPage)));
   }
 
@@ -65,11 +65,8 @@ export class GarageComponent implements OnInit {
   }
 
   onSearchInput() {
+    this.checkPageOutOfBounds();
     this.updateVehicleReference();
-  }
-
-  getPageArray() {
-    return Array.from({length: this.getLastPageNumber() + 1}, (v, i) => i);
   }
 
   getLastPageNumber() {
