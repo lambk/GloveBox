@@ -1,8 +1,8 @@
-import { Vehicle } from 'src/app/interfaces/vehicle.model';
-import { shareReplay, map, tap } from 'rxjs/operators';
-import { of, Subject, Observable } from 'rxjs';
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { of } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { Vehicle } from 'src/app/interfaces/vehicle.model';
 import { VehicleRegistrationDTO } from 'src/app/interfaces/vehicleRegistration.dto';
 import { environment } from 'src/environments/environment';
 

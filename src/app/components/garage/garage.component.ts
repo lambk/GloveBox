@@ -65,33 +65,17 @@ export class GarageComponent implements OnInit {
   }
 
   onSearchInput() {
-    this.checkPageOutOfBounds();
     this.updateVehicleReference();
   }
 
-  getLastPageNumber() {
-    if (!this.totalLength) {
-      return 0;
-    }
-    return Math.ceil(this.totalLength / this.vehiclesPerPage) - 1;
-  }
-
-  setPageNumber(num: number) {
+  onPageChange(num: number) {
     this.pageNumber = num;
     this.updateVehicleReference();
   }
 
   onPageCapacityChange() {
-    this.checkPageOutOfBounds();
     localStorage.setItem('pageCapacity', this.vehiclesPerPage.toString());
     this.updateVehicleReference();
-  }
-
-  checkPageOutOfBounds() {
-    const lastPage = this.getLastPageNumber();
-    if (this.pageNumber > lastPage) {
-      this.pageNumber = lastPage;
-    }
   }
 
   getDaysUntilDate(dateStr: string) {

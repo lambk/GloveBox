@@ -1,0 +1,11 @@
+<ul class="pagination">
+  <li class="page-item" [class.disabled]="pageNumber === 0">
+    <a class="page-link" (click)="setPageNumber(pageNumber - 1)">&#171;</a>
+  </li>
+  <li class="page-item" *ngFor="let num of getMaxPages() | range" [class.active]="num === pageNumber">
+    <a class="page-link" (click)="setPageNumber(num)">{{num + 1}}</a>
+  </li>
+  <li class="page-item" [class.disabled]="pageNumber >= getMaxPages() - 1">
+    <a class="page-link" (click)="setPageNumber(pageNumber + 1)">&#187;</a>
+  </li>
+</ul>
