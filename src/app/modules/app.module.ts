@@ -21,6 +21,9 @@ import { LoginFormComponent } from '../components/login-form/login-form.componen
 import { RegisterVehicleFormComponent } from '../components/register-vehicle-form/register-vehicle-form.component';
 import { LoadingOverlayComponent } from '../components/loading-overlay/loading-overlay.component';
 import { AlertComponent } from '../components/alert/alert.component';
+import { RangePipe } from '../util/range-pipe';
+import { PaginationComponent } from '../components/pagination/pagination.component';
+import { RegisterVehicleModalComponent } from '../components/register-vehicle-modal/register-vehicle-modal.component';
 
 shim();
 
@@ -37,7 +40,10 @@ shim();
     LoginFormComponent,
     RegisterVehicleFormComponent,
     LoadingOverlayComponent,
-    AlertComponent
+    AlertComponent,
+    RangePipe,
+    PaginationComponent,
+    RegisterVehicleModalComponent
   ],
   imports: [
     BrowserModule,

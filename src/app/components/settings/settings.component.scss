@@ -1,0 +1,42 @@
+.theme-preview {
+    width: 20px;
+    height: 1.2em;
+    border: 1px solid black;
+}
+
+.input-button {
+    border: none;
+    border-radius: 100%;
+    padding: 0;
+    min-width: 1.5em;
+    height: 1.5em;
+    cursor: pointer;
+
+    > i {
+        color: white;
+    }
+
+    &:disabled {
+        background: grey !important;
+    }
+
+    &:not(:last-child) {
+        margin-right: 5px;
+    }
+}
+
+.input-accept {
+    background: rgba(0, 128, 0, 0.8);
+
+    &:hover {
+        background: rgba(64, 160, 64, 0.8);
+    }
+}
+
+.input-reset {
+    background: rgba(255, 174, 0, 0.8);
+
+    &:hover {
+        background: rgba(255, 192, 0, 0.8);
+    }
+}

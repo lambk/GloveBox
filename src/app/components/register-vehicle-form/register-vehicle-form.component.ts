@@ -4,12 +4,12 @@ import { Component, OnInit, ViewChild, Input, EventEmitter, Output } from '@angu
 import { NgForm } from '@angular/forms';
 import { VehicleService } from './../../services/vehicle/vehicle.service';
 import * as $ from 'jquery';
-import { AlertType, SubmitEvent } from 'src/app/constants';
+import { AlertType, SubmitEvent, AlertRestriction } from 'src/app/constants';
 
 @Component({
   selector: 'app-register-vehicle-form',
   templateUrl: './register-vehicle-form.component.html',
-  styleUrls: ['./register-vehicle-form.component.css']
+  styleUrls: ['./register-vehicle-form.component.scss']
 })
 export class RegisterVehicleFormComponent implements OnInit {
 
@@ -34,9 +34,10 @@ export class RegisterVehicleFormComponent implements OnInit {
     }
     this.onSubmitStart();
     this.vehicleService.register(this.data).subscribe((res) => {
+      this.alertService.sendAlert({message: 'Vehicle successfully registered', type: AlertType.SUCCESS});
       $('#registerVehicleModal .close').click();
     }, (err) => {
-      this.alertService.sendAlert({message: err.error, type: AlertType.ERROR});
+      this.alertService.sendAlert({message: err.error, type: AlertType.ERROR, restrict: AlertRestriction.REGISTER_VEHICLE_FORM});
     }).add(() => this.onSubmitEnd());
   }
 

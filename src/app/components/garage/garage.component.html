@@ -1,17 +1,16 @@
 <div class="garage-container">
   <h2>Garage</h2>
-  <div class="mb-1 d-flex">
-    <input type="text" class="lite-input col-md-3 col-sm-6" [(ngModel)]="searchInput" (input)="filterVehicles()" placeholder="Search">
-    <div class="form-inline ml-2 align-items-end">
+  <app-alert></app-alert>
+  <div class="mb-1 d-flex align-items-end">
+    <input type="text" class="flex-shrink-1 lite-input col-md-3 col-sm-6" [(ngModel)]="searchInput" (input)="onSearchInput()" placeholder="Search">
+    <div class="flex-shrink-0 form-inline ml-2 align-items-end">
       <span>Show</span>
-      <select class="form-control ml-2 mr-2" style="height: 2rem" [(ngModel)]="vehiclesPerPage" (change)="onPageCapacityChange()">
-        <option>5</option>
-        <option>10</option>
-        <option>15</option>
+      <select class="form-control ml-2 mr-2" style="height: 2rem; width: auto" [(ngModel)]="vehiclesPerPage" (change)="onPageCapacityChange()">
+        <option *ngFor="let option of pageCapacities">{{option}}</option>
       </select>
-      <span>of {{filteredVehicles.length}}</span>
+      <span>of {{totalLength}}</span>
     </div>
-    <button type="button" class="btn btn-sm btn-success ml-auto" data-toggle="modal" data-target="#registerVehicleModal">
+    <button type="button" class="flex-shrink-0 btn btn-sm btn-success ml-auto" data-toggle="modal" data-target="#registerVehicleModal">
       <i class="fa fa-plus"></i> Add Vehicle
     </button>
   </div>
@@ -27,7 +26,7 @@
       <tr *ngIf="loadingVehicles">
         <td colspan="3" class="text-center">Loading vehicles <img src="assets/spinner-lg-black.gif" height="20"></td>
       </tr>
-      <tr *ngFor="let vehicle of getVehiclesToDisplay()">
+      <tr *ngFor="let vehicle of vehicleStream | async">
         <td>{{vehicle.plate}}</td>
         <td>{{vehicle.make}} {{vehicle.model}} {{vehicle.year}}</td>
         <td *ngIf="vehicle.wofExpiry === null else hasDate"></td>
@@ -44,44 +43,6 @@
       </tr>
     </tbody>
   </table>
-  <ul class="pagination">
-    <li class="page-item" [class.disabled]="pageNumber === 0">
-      <a class="page-link" (click)="setPageNumber(pageNumber - 1)">&#171;</a>
-    </li>
-    <li class="page-item" *ngFor="let num of getPageArray()" [class.active]="num === pageNumber">
-      <a class="page-link" (click)="setPageNumber(num)">{{num + 1}}</a>
-    </li>
-    <li class="page-item" [class.disabled]="pageNumber >= getLastPageNumber()">
-      <a class="page-link" (click)="setPageNumber(pageNumber + 1)">&#187;</a>
-    </li>
-  </ul>
+  <app-pagination [contentLength]="totalLength" [pageSize]="vehiclesPerPage" (pageChange)="onPageChange($event)"></app-pagination>
 </div>
-<div id="registerVehicleModal" class="modal fade" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title">Register a new vehicle</h3>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <app-register-vehicle-form [registerSubject]="registerSubject" (submitEvent)="onSubmitEvent($event)"></app-register-vehicle-form>
-      </div>
-      <div class="modal-footer">
-        <div class="w-100">
-          <div class="row">
-            <div class="col-md-6 order-md-2 mb-2 mb-md-0">
-              <button type="button" class="btn btn-success btn-block" (click)="onRegisterClick()" [disabled]="isSubmitting">Register
-                <img src="assets/spinner-sm-white.gif" height="24" class="ajaxLoader" *ngIf="isSubmitting" />
-              </button>
-            </div>
-            <div class="col-md-6 order-md-1">
-              <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">Cancel</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<app-register-vehicle-modal></app-register-vehicle-modal>

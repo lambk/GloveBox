@@ -27,10 +27,10 @@
   opacity: 0;
   max-height: 0;
   overflow: hidden;
-}
 
-.collapse.show {
-  transition: all 0.5s linear;
-  opacity: 1;
-  max-height: 500px;
+  &.show {
+    transition: all 0.5s linear;
+    opacity: 1;
+    max-height: 500px;
+  }
 }

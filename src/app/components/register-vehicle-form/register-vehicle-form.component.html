@@ -1,5 +1,5 @@
 <form (keydown.enter)="submit()" #form="ngForm" novalidate>
-  <app-alert></app-alert>
+  <app-alert [classification]="'RegisterVehicleForm'"></app-alert>
   <h5>General</h5>
   <fieldset [disabled]="disableForm">
     <div class="row">
@@ -7,7 +7,7 @@
         <div class="input-group-prepend">
           <span class="input-group-text required">Plate</span>
         </div>
-        <input type="text" class="form-control" name="plate" #plate="ngModel" [(ngModel)]="data.plate"
+        <input type="text" class="form-control uppercase" name="plate" #plate="ngModel" [(ngModel)]="data.plate"
         [class.invalid]="form.submitted && plate.pristine && plate.invalid" required>
       </div>
     </div>

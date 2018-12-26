@@ -1,105 +1,64 @@
 import { VehicleService } from './../../services/vehicle/vehicle.service';
 import { SubmitEvent } from './../../constants';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { Vehicle } from 'src/app/interfaces/vehicle.model';
+import { map, tap } from 'rxjs/operators';
 
-const defaultPageSize = 5;
-const wofWarningPointInDays = 30;
+const DEFAULT_PAGE_SIZE = 5;
+const WOF_WARNING_THRESHOLD_DAYS = 30;
+const PAGE_CAPACITY_OPTIONS = [5, 10, 15];
 
 @Component({
   selector: 'app-garage',
   templateUrl: './garage.component.html',
-  styleUrls: ['./garage.component.css']
+  styleUrls: ['./garage.component.scss']
 })
 export class GarageComponent implements OnInit {
 
-  public vehicles: Vehicle[] = [];
-  public filteredVehicles: Vehicle[] = [];
-  public registerSubject: Subject<void>;
+  public vehicleStream: Observable<Vehicle[]>;
+  public totalLength = 0;
 
-  public isSubmitting = false;
   public searchInput = '';
   public pageNumber = 0;
-  public vehiclesPerPage = defaultPageSize;
+  public vehiclesPerPage = DEFAULT_PAGE_SIZE;
+  public pageCapacities = PAGE_CAPACITY_OPTIONS;
   public loadingVehicles = true;
 
   constructor(private vehicleService: VehicleService) {
   }
 
   ngOnInit() {
-    this.registerSubject = new Subject();
-    this.getVehicles();
-    this.vehicleService.getVehicleSubject().subscribe(
-      vehicles => {
-        this.vehicles = vehicles;
-        this.filterVehicles();
-      },
-      err => console.log(err));
-    }
-
-    getVehicles() {
-      this.vehicleService.getAll().subscribe(
-        vehicles => {
-          this.vehicles = vehicles;
-          this.filterVehicles();
-      },
-      err => console.log(err)).add(() => this.loadingVehicles = false);
+    this.updateVehicleReference();
   }
 
-  filterVehicles() {
-    const searchTerm = this.searchInput;
-    this.filteredVehicles = this.vehicles.filter((vehicle) => {
-      if (searchTerm === '') {
-        return true;
-      }
-      const vehicleDesc = vehicle.make + ' ' + vehicle.model;
-      return vehicle.plate.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1
-       || vehicleDesc.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1;
-    });
-    this.checkPageOutOfBounds();
+  private updateVehicleReference() {
+    const regex = new RegExp(this.searchInput, 'i');
+    this.vehicleStream = this.vehicleService.getAll().pipe(
+      tap(() => this.loadingVehicles = false),
+      map(vehicles => vehicles.filter(vehicle => {
+        if (!this.searchInput) {
+          return true;
+        }
+        const desc = `${vehicle.make} ${vehicle.model}`;
+        return vehicle.plate.match(regex) || desc.match(regex);
+      })),
+      tap(vehicles => this.totalLength = vehicles.length),
+      map(vehicles => vehicles.slice(this.pageNumber * this.vehiclesPerPage, (this.pageNumber + 1) * this.vehiclesPerPage)));
   }
 
-  getVehiclesToDisplay() {
-    return this.filteredVehicles.slice(this.pageNumber * this.vehiclesPerPage, (this.pageNumber + 1) * this.vehiclesPerPage);
+  onSearchInput() {
+    this.updateVehicleReference();
   }
 
-  onRegisterClick() {
-    this.registerSubject.next();
-  }
-
-  onSubmitEvent(event: SubmitEvent) {
-    if (event === SubmitEvent.START) {
-      this.isSubmitting = true;
-    } else {
-      this.isSubmitting = false;
-    }
-  }
-
-  getPageArray() {
-    return Array.from({length: this.getLastPageNumber() + 1}, (v, i) => i);
-  }
-
-  getLastPageNumber() {
-    if (this.filteredVehicles.length === 0) {
-      return 0;
-    }
-    return Math.ceil(this.filteredVehicles.length / this.vehiclesPerPage) - 1;
-  }
-
-  setPageNumber(num: number) {
+  onPageChange(num: number) {
     this.pageNumber = num;
+    this.updateVehicleReference();
   }
 
   onPageCapacityChange() {
-    this.checkPageOutOfBounds();
-  }
-
-  checkPageOutOfBounds() {
-    const lastPage = this.getLastPageNumber();
-    if (this.pageNumber > lastPage) {
-      this.pageNumber = lastPage;
-    }
+    localStorage.setItem('pageCapacity', this.vehiclesPerPage.toString());
+    this.updateVehicleReference();
   }
 
   getDaysUntilDate(dateStr: string) {
@@ -113,6 +72,6 @@ export class GarageComponent implements OnInit {
   }
 
   isWoFNearlyDue(dateStr: string) {
-    return this.getDaysUntilDate(dateStr) <= wofWarningPointInDays;
+    return this.getDaysUntilDate(dateStr) <= WOF_WARNING_THRESHOLD_DAYS;
   }
 }

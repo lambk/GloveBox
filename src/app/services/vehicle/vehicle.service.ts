@@ -1,60 +1,52 @@
-import { Vehicle } from 'src/app/interfaces/vehicle.model';
-import { shareReplay, map } from 'rxjs/operators';
-import { of, Subject, Observable } from 'rxjs';
-import { Injectable } from '@angular/core';
+import { StateService } from './../state/state.service';
+import { StateManager } from './../../interfaces/stateManager';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { of } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { Vehicle } from 'src/app/interfaces/vehicle.model';
 import { VehicleRegistrationDTO } from 'src/app/interfaces/vehicleRegistration.dto';
 import { environment } from 'src/environments/environment';
-
-const headers = new HttpHeaders({
-  'token': localStorage.getItem('token'),
-  'Content-Type': 'application/json'
-});
+import { Headers } from 'src/app/util/headers';
 
 @Injectable({
   providedIn: 'root'
 })
-export class VehicleService {
+export class VehicleService implements StateManager {
 
-  private vehicles: Vehicle[] = [];
-  private vehicleSubject: Subject<Vehicle[]>;
+  private vehicles: Vehicle[];
 
-  constructor(private http: HttpClient) {
-    this.vehicleSubject = new Subject();
+  constructor(private http: HttpClient, private stateService: StateService) {
+    this.stateService.registerStateManager(this);
+  }
+
+  clearState() {
+    this.vehicles = undefined;
   }
 
   register(vehicle: VehicleRegistrationDTO) {
-    const ajax = this.http.post<Vehicle>(`${environment.server_url}/vehicles/${localStorage.getItem('id')}`,
-      vehicle, {headers: headers}).pipe(shareReplay(1));
-    ajax.subscribe((response) => {
-      this.vehicles.push(response);
-      this.vehicles = this.sortVehicles(this.vehicles);
-      this.pushVehiclesUpdate();
-    });
-    return ajax;
+    vehicle.plate = vehicle.plate.toUpperCase();
+    return this.http.post<Vehicle>(`${environment.server_url}/vehicles/${localStorage.getItem('id')}`,
+      vehicle, {headers: Headers.getStandardHeaders()}).pipe(
+        tap((vehicleResult) => {
+          this.vehicles.push(vehicleResult);
+          this.vehicles = this.sortVehicles(this.vehicles);
+        })
+      );
   }
 
   getAll() {
-    if (this.vehicles.length > 0) {
+    if (this.vehicles) {
       return of(this.vehicles);
     }
-    const ajax = this.http.get<Vehicle[]>(`${environment.server_url}/vehicles/${localStorage.getItem('id')}`,
-      {headers: headers, responseType: 'json'}).pipe(map(vehicles => {
-        return this.sortVehicles(vehicles);
-      }));
-    ajax.subscribe(response => this.vehicles = response);
-    return ajax;
+    return this.http.get<Vehicle[]>(`${environment.server_url}/vehicles/${localStorage.getItem('id')}`,
+      {headers: Headers.getStandardHeaders(), responseType: 'json'}).pipe(
+        map(vehicles => this.sortVehicles(vehicles)),
+        tap(sortedVehicles => this.vehicles = sortedVehicles)
+      );
   }
 
   private sortVehicles(vehicles: Vehicle[]) {
     return vehicles.sort((a, b) => a.plate < b.plate ? -1 : a.plate === b.plate ? 0 : 1);
-  }
-
-  getVehicleSubject() {
-    return this.vehicleSubject;
-  }
-
-  private pushVehiclesUpdate() {
-    this.vehicleSubject.next(this.vehicles);
   }
 }
