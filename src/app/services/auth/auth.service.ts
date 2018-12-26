@@ -1,6 +1,8 @@
+import { StateService } from './../state/state.service';
+import { Headers } from './../../util/headers';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, shareReplay } from 'rxjs/operators';
+import { map, shareReplay, tap } from 'rxjs/operators';
 import { LoginDTO } from 'src/app/interfaces/login.dto';
 import { environment } from 'src/environments/environment';
 
@@ -9,13 +11,12 @@ import { environment } from 'src/environments/environment';
 })
 export class AuthService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private stateService: StateService) { }
 
   public login(data: LoginDTO) {
-    const ajax = this.http.post(environment.server_url + '/auth/login', data,
-      {responseType: 'json'}).pipe(shareReplay(1));
-    ajax.subscribe(this.saveLoginData);
-    return ajax;
+    return this.http.post(`${environment.server_url}/auth/login`, data, {responseType: 'json'}).pipe(
+      tap((response) => this.saveLoginData(response))
+    );
   }
 
   public resumeSession() {
@@ -30,14 +31,11 @@ export class AuthService {
   }
 
   public logout() {
-    const headers = new HttpHeaders({
-      'token': localStorage.getItem('token'),
-      'Content-Type': 'application/json'
-    });
-    const ajax = this.http.post(environment.server_url + '/auth/logout', localStorage.getItem('id'),
-      { headers: headers, responseType: 'text' }).pipe(shareReplay(1));
-    ajax.subscribe(this.removeLoginData, this.removeLoginData);
-    return ajax;
+    return this.http.post(`${environment.server_url}/auth/logout`, localStorage.getItem('id'),
+      { headers: Headers.getStandardHeaders(), responseType: 'text' }).pipe(
+        tap(() => this.removeLoginData()),
+        tap(() => this.stateService.clearAllState())
+      );
   }
 
   private saveLoginData(data) {
