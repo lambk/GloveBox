@@ -22,6 +22,7 @@ export class VehicleService {
   }
 
   register(vehicle: VehicleRegistrationDTO) {
+    vehicle.plate = vehicle.plate.toUpperCase();
     return this.http.post<Vehicle>(`${environment.server_url}/vehicles/${localStorage.getItem('id')}`,
       vehicle, {headers: headers}).pipe(
         tap((vehicleResult) => {

@@ -18,9 +18,7 @@ export class GarageComponent implements OnInit {
 
   public vehicleStream: Observable<Vehicle[]>;
   public totalLength = 0;
-  public registerSubject: Subject<void>;
 
-  public isSubmitting = false;
   public searchInput = '';
   public pageNumber = 0;
   public vehiclesPerPage = DEFAULT_PAGE_SIZE;
@@ -32,15 +30,12 @@ export class GarageComponent implements OnInit {
 
   ngOnInit() {
     this.updateVehicleReference();
-    this.vehicleStream.toPromise().then(() => {
-      this.loadingVehicles = false;
-    });
-    this.registerSubject = new Subject();
   }
 
   private updateVehicleReference() {
     const regex = new RegExp(this.searchInput, 'i');
     this.vehicleStream = this.vehicleService.getAll().pipe(
+      tap(() => this.loadingVehicles = false),
       map(vehicles => vehicles.filter(vehicle => {
         if (!this.searchInput) {
           return true;
@@ -50,18 +45,6 @@ export class GarageComponent implements OnInit {
       })),
       tap(vehicles => this.totalLength = vehicles.length),
       map(vehicles => vehicles.slice(this.pageNumber * this.vehiclesPerPage, (this.pageNumber + 1) * this.vehiclesPerPage)));
-  }
-
-  onRegisterClick() {
-    this.registerSubject.next();
-  }
-
-  onSubmitEvent(event: SubmitEvent) {
-    if (event === SubmitEvent.START) {
-      this.isSubmitting = true;
-    } else {
-      this.isSubmitting = false;
-    }
   }
 
   onSearchInput() {

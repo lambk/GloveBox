@@ -23,6 +23,7 @@ import { LoadingOverlayComponent } from '../components/loading-overlay/loading-o
 import { AlertComponent } from '../components/alert/alert.component';
 import { RangePipe } from '../util/range-pipe';
 import { PaginationComponent } from '../components/pagination/pagination.component';
+import { RegisterVehicleModalComponent } from '../components/register-vehicle-modal/register-vehicle-modal.component';
 
 shim();
 
@@ -41,7 +42,8 @@ shim();
     LoadingOverlayComponent,
     AlertComponent,
     RangePipe,
-    PaginationComponent
+    PaginationComponent,
+    RegisterVehicleModalComponent
   ],
   imports: [
     BrowserModule,
