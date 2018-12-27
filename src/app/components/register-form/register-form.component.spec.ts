@@ -1,6 +1,11 @@
+import { Subject } from 'rxjs';
+import { UserService } from 'src/app/services/user/user.service';
+import { FormsModule } from '@angular/forms';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RegisterFormComponent } from './register-form.component';
+
+class MockUserService {}
 
 describe('RegisterFormComponent', () => {
   let component: RegisterFormComponent;
@@ -8,7 +13,13 @@ describe('RegisterFormComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RegisterFormComponent ]
+      declarations: [ RegisterFormComponent ],
+      imports: [
+        FormsModule
+      ],
+      providers: [
+        {provide: UserService, useClass: MockUserService}
+      ]
     })
     .compileComponents();
   }));
@@ -16,6 +27,7 @@ describe('RegisterFormComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(RegisterFormComponent);
     component = fixture.componentInstance;
+    component.submitSubject = new Subject<any>();
     fixture.detectChanges();
   });
 

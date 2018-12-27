@@ -1,6 +1,10 @@
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { RouterTestingModule } from '@angular/router/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SideBarComponent } from './side-bar.component';
+
+class MockAuthService {}
 
 describe('SideBarComponent', () => {
   let component: SideBarComponent;
@@ -8,7 +12,13 @@ describe('SideBarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SideBarComponent ]
+      declarations: [ SideBarComponent ],
+      imports: [
+        RouterTestingModule
+      ],
+      providers: [
+        {provide: AuthService, useClass: MockAuthService}
+      ]
     })
     .compileComponents();
   }));
