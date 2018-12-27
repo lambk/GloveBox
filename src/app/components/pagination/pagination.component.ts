@@ -23,7 +23,7 @@ export class PaginationComponent implements OnInit {
 
   @Input()
   set pageSize(size: any) {
-    this._pageSize = parseInt(size);
+    this._pageSize = parseInt(size, 10);
     this.handlePageConstraintChange();
   }
   get pageSize() {
@@ -55,7 +55,7 @@ export class PaginationComponent implements OnInit {
     }
   }
 
-  isPageOverflowing() {
+  private isPageOverflowing() {
     return this.pageNumber >= this.getMaxPages();
   }
 
