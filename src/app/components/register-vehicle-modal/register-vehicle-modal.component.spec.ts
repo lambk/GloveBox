@@ -7,8 +7,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RegisterVehicleModalComponent } from './register-vehicle-modal.component';
 
-class MockVehicleService {}
-
 describe('RegisterVehicleModalComponent', () => {
   let component: RegisterVehicleModalComponent;
   let fixture: ComponentFixture<RegisterVehicleModalComponent>;
@@ -24,7 +22,7 @@ describe('RegisterVehicleModalComponent', () => {
         FormsModule
       ],
       providers: [
-        {provide: VehicleService, useClass: MockVehicleService}
+        { provide: VehicleService, useClass: jasmine.createSpy() }
       ]
     })
     .compileComponents();

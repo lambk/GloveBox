@@ -5,8 +5,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RegisterFormComponent } from './register-form.component';
 
-class MockUserService {}
-
 describe('RegisterFormComponent', () => {
   let component: RegisterFormComponent;
   let fixture: ComponentFixture<RegisterFormComponent>;
@@ -18,7 +16,7 @@ describe('RegisterFormComponent', () => {
         FormsModule
       ],
       providers: [
-        {provide: UserService, useClass: MockUserService}
+        { provide: UserService, useClass: jasmine.createSpy() }
       ]
     })
     .compileComponents();

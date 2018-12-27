@@ -5,10 +5,6 @@ import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 
-class MockAuthService {
-  resumeSession() {}
-}
-
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -21,7 +17,7 @@ describe('AppComponent', () => {
         SideBarComponent
       ],
       providers: [
-        {provide: AuthService, useClass: MockAuthService}
+        { provide: AuthService, useClass: jasmine.createSpy() }
       ]
     }).compileComponents();
   }));

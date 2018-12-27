@@ -10,10 +10,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RegisterFormComponent } from '../register-form/register-form.component';
 import { UserService } from 'src/app/services/user/user.service';
 
-class MockAuthService {}
-
-class MockUserService {}
-
 describe('EntryComponent', () => {
   let component: EntryComponent;
   let fixture: ComponentFixture<EntryComponent>;
@@ -32,8 +28,8 @@ describe('EntryComponent', () => {
         FormsModule
       ],
       providers: [
-        {provide: AuthService, useClass: MockAuthService},
-        {provide: UserService, useClass: MockUserService}
+        { provide: AuthService, useClass: jasmine.createSpy() },
+        { provide: UserService, useClass: jasmine.createSpy() }
       ]
     })
     .compileComponents();

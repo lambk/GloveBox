@@ -4,8 +4,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SideBarComponent } from './side-bar.component';
 
-class MockAuthService {}
-
 describe('SideBarComponent', () => {
   let component: SideBarComponent;
   let fixture: ComponentFixture<SideBarComponent>;
@@ -17,7 +15,7 @@ describe('SideBarComponent', () => {
         RouterTestingModule
       ],
       providers: [
-        {provide: AuthService, useClass: MockAuthService}
+        { provide: AuthService, useClass: jasmine.createSpy() }
       ]
     })
     .compileComponents();

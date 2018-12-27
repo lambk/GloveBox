@@ -10,11 +10,9 @@ import { RegisterVehicleModalComponent } from '../register-vehicle-modal/registe
 import { RangePipe } from 'src/app/util/range-pipe';
 import { RegisterVehicleFormComponent } from '../register-vehicle-form/register-vehicle-form.component';
 
-class MockVehicleService {
-  getAll() {
-    return new Observable();
-  }
-}
+const spy = jasmine.createSpyObj('vehicleService', {
+  getAll: new Observable()
+});
 
 describe('GarageComponent', () => {
   let component: GarageComponent;
@@ -34,7 +32,7 @@ describe('GarageComponent', () => {
         FormsModule
       ],
       providers: [
-        {provide: VehicleService, useClass: MockVehicleService}
+        { provide: VehicleService, useValue: spy }
       ]
     })
     .compileComponents();
