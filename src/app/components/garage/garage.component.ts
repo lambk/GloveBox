@@ -35,7 +35,7 @@ export class GarageComponent implements OnInit {
   private updateVehicleReference() {
     const regex = new RegExp(this.searchInput, 'i');
     this.vehicleStream = this.vehicleService.getAll().pipe(
-      tap(() => this.loadingVehicles = false),
+      tap(() => setTimeout(() => this.loadingVehicles = false, 0)),
       map(vehicles => vehicles.filter(vehicle => {
         if (!this.searchInput) {
           return true;
