@@ -27,6 +27,7 @@ export class GarageComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.vehicleService.vehicleUpdateObservable.subscribe(() => this.updateVehicleReference());
     this.updateVehicleReference();
   }
 
