@@ -11,7 +11,8 @@
     "e2e": "ng e2e",
     "electron": "ng build && electron .",
     "electron-nb": "electron .",
-    "electron-prod": "ng build --prod && electron ."
+    "electron-prod": "ng build --prod && electron .",
+    "dev-server": "java -jar ../GloveBox-Server/target/GloveBox-Server-1.0-SNAPSHOT.jar"
   },
   "private": true,
   "dependencies": {
