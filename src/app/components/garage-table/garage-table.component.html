@@ -1,0 +1,33 @@
+<table class="table table-hover table-pointer">
+    <thead class="thead-light">
+      <tr>
+        <th class="w-25">Plate</th>
+        <th class="w-50">Type</th>
+        <th class="w-25">Wof Due</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-template #loadingRow>
+        <tr>
+          <td colspan="3" class="text-center">Loading vehicles <img src="assets/spinner-lg-black.gif" height="20"></td>
+        </tr>
+      </ng-template>
+      <ng-template [ngIf]="vehicles !== null" [ngIfElse]="loadingRow">
+        <tr *ngFor="let vehicle of vehicles">
+          <td>{{vehicle.plate}}</td>
+          <td>{{vehicle.make}} {{vehicle.model}} {{vehicle.year}}</td>
+          <td *ngIf="vehicle.wofExpiry === null else wofDate"></td>
+          <ng-template #wofDate>
+              <ng-template [ngIf]="isWoFInFuture(vehicle.wofExpiry)" [ngIfElse]="wofOverdue">
+                <td [class.wof-warning]="isWoFNearlyDue(vehicle.wofExpiry)">In {{getDaysUntilDate(vehicle.wofExpiry)}} days ({{vehicle.wofExpiry}})</td>
+              </ng-template>
+              <ng-template #wofOverdue>
+                <td class="wof-overdue">
+                  <i class="fa fa-exclamation-circle"></i>
+                  {{-1 * getDaysUntilDate(vehicle.wofExpiry)}} days ago ({{vehicle.wofExpiry}})</td>
+              </ng-template>
+          </ng-template>
+        </tr>
+      </ng-template>
+    </tbody>
+  </table>

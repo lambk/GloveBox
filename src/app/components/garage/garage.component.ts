@@ -1,9 +1,8 @@
-import { VehicleService } from './../../services/vehicle/vehicle.service';
-import { SubmitEvent } from './../../constants';
-import { Subject, Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
-import { Vehicle } from 'src/app/interfaces/vehicle.model';
+import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import { Vehicle } from 'src/app/interfaces/vehicle.model';
+import { VehicleService } from './../../services/vehicle/vehicle.service';
 
 const DEFAULT_PAGE_SIZE = 5;
 const WOF_WARNING_THRESHOLD_DAYS = 30;
@@ -23,7 +22,6 @@ export class GarageComponent implements OnInit {
   public pageNumber = 0;
   public vehiclesPerPage = DEFAULT_PAGE_SIZE;
   public pageCapacities = PAGE_CAPACITY_OPTIONS;
-  public loadingVehicles = true;
 
   constructor(private vehicleService: VehicleService) {
   }
@@ -35,7 +33,6 @@ export class GarageComponent implements OnInit {
   private updateVehicleReference() {
     const regex = new RegExp(this.searchInput, 'i');
     this.vehicleStream = this.vehicleService.getAll().pipe(
-      tap(() => setTimeout(() => this.loadingVehicles = false, 0)),
       map(vehicles => vehicles.filter(vehicle => {
         if (!this.searchInput) {
           return true;

@@ -24,6 +24,7 @@ import { AlertComponent } from '../components/alert/alert.component';
 import { RangePipe } from '../util/range-pipe';
 import { PaginationComponent } from '../components/pagination/pagination.component';
 import { RegisterVehicleModalComponent } from '../components/register-vehicle-modal/register-vehicle-modal.component';
+import { GarageTableComponent } from '../components/garage-table/garage-table.component';
 
 shim();
 
@@ -43,7 +44,8 @@ shim();
     AlertComponent,
     RangePipe,
     PaginationComponent,
-    RegisterVehicleModalComponent
+    RegisterVehicleModalComponent,
+    GarageTableComponent
   ],
   imports: [
     BrowserModule,
