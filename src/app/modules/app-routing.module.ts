@@ -1,3 +1,4 @@
+import { VehicleComponent } from './../components/vehicle/vehicle.component';
 import { AuthGuard } from './../guard/auth.guard';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -30,6 +31,11 @@ const routes: Routes = [
   {
     path: 'settings',
     component: SettingsComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'vehicle/:plate',
+    component: VehicleComponent,
     canActivate: [AuthGuard]
   }
 ];

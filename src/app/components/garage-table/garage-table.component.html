@@ -13,7 +13,7 @@
         </tr>
       </ng-template>
       <ng-template [ngIf]="vehicles !== null" [ngIfElse]="loadingRow">
-        <tr *ngFor="let vehicle of vehicles">
+        <tr *ngFor="let vehicle of vehicles" (click)="onVehicleClick(vehicle)">
           <td>{{vehicle.plate}}</td>
           <td>{{vehicle.make}} {{vehicle.model}} {{vehicle.year}}</td>
           <td *ngIf="vehicle.wofExpiry === null else wofDate"></td>

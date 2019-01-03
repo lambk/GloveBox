@@ -1,0 +1,12 @@
+<div *ngIf="vehicleObservable | async as vehicle">
+  <div class="d-flex align-items-baseline">
+    <h2>{{vehicle.make}} {{vehicle.model}}</h2><h4 class="year-tag">{{vehicle.year}}</h4>
+  </div>
+  <h4>{{vehicle.plate}}</h4>
+  
+</div>
+<div class="card text-center">
+  <div class="card-img-top">
+    <img src="https://via.placeholder.com/500x200" />
+  </div>
+</div>
