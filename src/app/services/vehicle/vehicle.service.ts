@@ -51,6 +51,11 @@ export class VehicleService implements StateManager {
       );
   }
 
+  getOne(plate: string) {
+    return this.http.get<Vehicle>(`${environment.server_url}/vehicles/${localStorage.getItem('id')}/${plate}`,
+      { headers: Headers.getStandardHeaders(), responseType: 'json' });
+  }
+
   private sortVehicles(vehicles: Vehicle[]) {
     return vehicles.sort((a, b) => a.plate < b.plate ? -1 : a.plate === b.plate ? 0 : 1);
   }
