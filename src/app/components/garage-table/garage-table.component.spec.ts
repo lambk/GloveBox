@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { GarageTableComponent } from './garage-table.component';
+import { Router } from '@angular/router';
 
 
 describe('GarageTableComponent', () => {
@@ -8,7 +9,10 @@ describe('GarageTableComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GarageTableComponent ]
+      declarations: [ GarageTableComponent ],
+      providers: [
+        { provide: Router, useClass: jasmine.createSpy() }
+      ]
     })
     .compileComponents();
   }));

@@ -19,7 +19,7 @@ export class VehicleComponent implements OnInit {
     this.route.params.subscribe(params => this.loadVehicle(params.plate));
   }
 
-  loadVehicle(plate: string) {
+  private loadVehicle(plate: string) {
     this.vehicleObservable = this.vehicleService.getOne(plate);
   }
 

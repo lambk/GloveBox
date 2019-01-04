@@ -1,8 +1,8 @@
 <div *ngIf="vehicleObservable | async as vehicle">
   <div class="d-flex align-items-baseline">
-    <h2>{{vehicle.make}} {{vehicle.model}}</h2><h4 class="year-tag">{{vehicle.year}}</h4>
+    <h2 class="title-tag">{{vehicle.make}} {{vehicle.model}}</h2><h4 class="year-tag">{{vehicle.year}}</h4>
   </div>
-  <h4>{{vehicle.plate}}</h4>
+  <h4 class="plate-tag">{{vehicle.plate}}</h4>
   
 </div>
 <div class="card text-center">

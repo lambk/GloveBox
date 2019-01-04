@@ -21,11 +21,11 @@ export class AppComponent implements OnInit {
         this.href = e.url;
       }
     });
-
     if (localStorage.getItem('token') !== null) {
       this.loadingService.setLoadingState(true);
       this.authService.resumeSession()
-        .subscribe(() => this.router.navigate(['/']), () => this.router.navigate(['/login']))
+        .subscribe(() => this.router.navigate(['/']),
+          () => this.router.navigate(['/login']))
         .add(() => this.loadingService.setLoadingState(false));
     }
   }
