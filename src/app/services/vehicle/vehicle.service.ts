@@ -1,13 +1,13 @@
-import { StateService } from './../state/state.service';
-import { StateManager } from './../../interfaces/stateManager';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { Vehicle } from 'src/app/interfaces/vehicle.model';
 import { VehicleRegistrationDTO } from 'src/app/interfaces/vehicleRegistration.dto';
-import { environment } from 'src/environments/environment';
 import { Headers } from 'src/app/util/headers';
+import { environment } from 'src/environments/environment';
+import { StateManager } from './../../interfaces/stateManager';
+import { StateService } from './../state/state.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +15,13 @@ import { Headers } from 'src/app/util/headers';
 export class VehicleService implements StateManager {
 
   private vehicles: Vehicle[];
+  private vehicleUpdateSubject: Subject<any>;
+  public vehicleUpdateObservable: Observable<any>;
 
   constructor(private http: HttpClient, private stateService: StateService) {
     this.stateService.registerStateManager(this);
+    this.vehicleUpdateSubject = new Subject();
+    this.vehicleUpdateObservable = this.vehicleUpdateSubject.asObservable();
   }
 
   clearState() {
@@ -31,6 +35,7 @@ export class VehicleService implements StateManager {
         tap((vehicleResult) => {
           this.vehicles.push(vehicleResult);
           this.vehicles = this.sortVehicles(this.vehicles);
+          this.notifyVehicleUpdate();
         })
       );
   }
@@ -46,7 +51,16 @@ export class VehicleService implements StateManager {
       );
   }
 
+  getOne(plate: string) {
+    return this.http.get<Vehicle>(`${environment.server_url}/vehicles/${localStorage.getItem('id')}/${plate}`,
+      { headers: Headers.getStandardHeaders(), responseType: 'json' });
+  }
+
   private sortVehicles(vehicles: Vehicle[]) {
     return vehicles.sort((a, b) => a.plate < b.plate ? -1 : a.plate === b.plate ? 0 : 1);
+  }
+
+  private notifyVehicleUpdate() {
+    this.vehicleUpdateSubject.next();
   }
 }

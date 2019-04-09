@@ -14,35 +14,7 @@
       <i class="fa fa-plus"></i> Add Vehicle
     </button>
   </div>
-  <table class="table table-hover table-pointer">
-    <thead class="thead-light">
-      <tr>
-        <th class="w-25">Plate</th>
-        <th class="w-50">Type</th>
-        <th class="w-25">Wof Due</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngIf="loadingVehicles">
-        <td colspan="3" class="text-center">Loading vehicles <img src="assets/spinner-lg-black.gif" height="20"></td>
-      </tr>
-      <tr *ngFor="let vehicle of vehicleStream | async">
-        <td>{{vehicle.plate}}</td>
-        <td>{{vehicle.make}} {{vehicle.model}} {{vehicle.year}}</td>
-        <td *ngIf="vehicle.wofExpiry === null else hasDate"></td>
-        <ng-template #hasDate>
-            <ng-template [ngIf]="isWoFInFuture(vehicle.wofExpiry)" [ngIfElse]="wofOverdue">
-              <td [class.wof-warning]="isWoFNearlyDue(vehicle.wofExpiry)">In {{getDaysUntilDate(vehicle.wofExpiry)}} days ({{vehicle.wofExpiry}})</td>
-            </ng-template>
-            <ng-template #wofOverdue>
-              <td class="wof-overdue">
-                <i class="fa fa-exclamation-circle"></i>
-                {{-1 * getDaysUntilDate(vehicle.wofExpiry)}} days ago ({{vehicle.wofExpiry}})</td>
-            </ng-template>
-        </ng-template>
-      </tr>
-    </tbody>
-  </table>
+  <app-garage-table [vehicles]="vehicleStream | async"></app-garage-table>
   <app-pagination [contentLength]="totalLength" [pageSize]="vehiclesPerPage" (pageChange)="onPageChange($event)"></app-pagination>
 </div>
 <app-register-vehicle-modal></app-register-vehicle-modal>
